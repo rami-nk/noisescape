@@ -1,0 +1,169 @@
+:root {
+  --bg: #1b1b1b; 
+  --fontColor: #f2f2f2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--fontColor);
+}
+
+/* Body styling */
+body {
+  line-height: 1.6;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Layout Containers */
+#columns {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 70%;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.column {
+  flex: 1;
+  min-height: 100%;
+}
+
+/* Specific column background colors */
+#column1 {
+
+}
+
+#column2 {
+
+}
+
+#column3 {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;;
+}
+
+
+
+
+.headline {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.button {
+    border: 0.1rem solid var(--fontColor);
+    border-radius: 10000rem;
+    padding: 0.5rem 1.5rem;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0;
+    cursor: pointer;
+}
+
+.playPauseImg {
+    padding: 0;
+    margin: 0 0 0 1rem;
+    width: 1.8rem;
+}
+
+.whiteNoiseButton {
+    background: #5f5f5f;
+}
+
+.rightSkewedNoiseButton {
+    background: #972d28;
+}
+
+.leftSkewedNoiseButton {
+    background: #ac458d;
+}
+
+
+
+
+
+
+#footer {
+  width: 100%;
+  height: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.logo {
+    border-radius: 100%;
+    width: 1.2rem;
+    margin: 0 1rem 0 0;
+}
+
+
+
+
+
+
+
+#row1 {
+  width: 100%;
+  height: 27%;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+
+
+
+#leftColumnInRow1 {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-left: 3rem;
+}
+
+#rightColumnInRow1 {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  padding-right: 3rem;
+}
+
+#logOnlyEEGButton{
+    background-color: #1b1b1b;
+}
+
+#logEEGandNoiseButton {
+    background-color: #3a8c53;
+}
