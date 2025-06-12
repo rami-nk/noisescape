@@ -11,12 +11,12 @@
   width: 20px;
   height: 200px;
   position: relative;
-  margin: 0 10px;
+  margin: 0 0.8vw;
 }
 
 .vertical-slider {
   width: 200px;
-  height: 20px;
+  height: 14px;
   transform: rotate(90deg);
   transform-origin: top left;
   position: absolute;
