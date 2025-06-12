@@ -4,14 +4,92 @@
   <meta charset="UTF-8">
   <title>My Electron App</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="sliders.css">
 </head>
 <body>
     <div id="columns">
         <div class="column" id="column1">
             <p class="headline">EEG Bands:</p>
+            <div id="allBandsContainer">
+                <div class="bandContainerWrapper">
+                <p id="deltaLabel">&#x03B4;</p>
+                <div id="deltaBand" class="bandContainer"></div>
+                </div>
+                <div class="bandContainerWrapper">
+                <p id="thetaLabel">&#x03B8;</p>
+                <div id="thetaBand" class="bandContainer"></div>
+                </div>
+                <div class="bandContainerWrapper">
+                <p id="alphaLabel">&#x03B1;</p>
+                <div id="alphaBand" class="bandContainer"></div>
+                </div>
+                <div class="bandContainerWrapper">
+                <p id="betaLabel">&#x03B2;</p>
+                <div id="betaBand" class="bandContainer"></div>
+                </div>
+                <div class="bandContainerWrapper">
+                <p id="gammaLabel">&#x03B3;</p>
+                <div id="gammaBand" class="bandContainer"></div>
+                </div>
+
+        
+            </div>
         </div>
+
         <div class="column" id="column2">
             <p class="headline">Noise Sound:</p>
+                <div id="verticalSliderContainer">
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ff0000;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffa500;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffff00;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #008000;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #40e0d0;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #add8e6;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #0000ff;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #800080;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #9370db;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffc0cb;" min="0" max="100" value="50"></div>
+                </div>
+
+                <div id="volumeAndPLayRow">
+                    <div class="volumeContainer" id="mainVolume">
+                        <div class="sliderWrapper">
+                            <input type="range" id="volumeSlider" min="1" max="9" value="5">
+                        </div>
+                        <span id="thumbLabel" class="thumbLabel">5</span>
+                    </div>
+                    <img src="assets/play.svg" class="playPauseImg" id="playPauseButtonFreePlay">
+                </div>
+
+                <div id="definedVolumesContainer">
+                    <p class="headline">Defined Volumes:</p>
+                    <div id="lowVolumeContainer" class="definedVolumeContainer">
+                        <p class="definedVolumeLabel">Low:</p>
+                        <div class="sliderWrapper">
+                            <input type="range" id="lowVolumeSlider" class="definedVolumeSlider" min="1" max="9" value="3">
+                        </div>
+                        <span id="lowThumbLabel" class="thumbLabel">3</span>
+                    </div>
+                    <div id="middleVolumeContainer" class="definedVolumeContainer">
+                        <p class="definedVolumeLabel">Middle:</p>
+                        <div class="sliderWrapper">
+                            <input type="range" id="middleVolumeSlider" class="definedVolumeSlider" min="1" max="9" value="5">
+                        </div>
+                        <span id="middleThumbLabel" class="thumbLabel">5</span>
+                    </div>
+                    <div id="highVolumeContainer" class="definedVolumeContainer">
+                        <p class="definedVolumeLabel">High:</p>
+                        <div class="sliderWrapper">
+                            <input type="range" id="highVolumeSlider" class="definedVolumeSlider" min="1" max="9" value="7">
+                        </div>
+                        <span id="highThumbLabel" class="thumbLabel">7</span>
+                    </div>
+                </div>
+
+                <div id="adaptiveNoiseContainer">
+                    <p class="headline adaptiveNoiseText">Adpative Noise Scape:</p>
+                    <img src="assets/play.svg" class="playPauseImg" id="playPauseButtonAdaptiveNoise">
+                </div>
         </div>
         <div class="column" id="column3">
             <p class="headline">Study:</p>
@@ -83,5 +161,7 @@
         <img src="assets/logo.png" alt="Logo" class="logo">
         <p>NoiseScape</p>
     </div>
+
+    <script src="sliders.js"></script>
 </body>
 </html>

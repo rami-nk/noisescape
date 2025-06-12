@@ -45,11 +45,44 @@ body {
 
 /* Specific column background colors */
 #column1 {
-
+  border-right: 1px solid var(--fontColor);
 }
 
-#column2 {
+#allBandsContainer {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 4rem;
+}
 
+.bandContainerWrapper {
+  width: 80%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.bandContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--fontColor);
+  border-radius: 10px;
+  margin-left: 1rem;
+}
+
+
+#column2 {
+  border-right: 1px solid var(--fontColor);
 }
 
 #column3 {
@@ -166,4 +199,35 @@ body {
 
 #logEEGandNoiseButton {
     background-color: #3a8c53;
+}
+
+
+
+
+
+#playPauseButtonFreePlay {
+  cursor: pointer;
+  margin-left: 3rem;
+}
+
+
+
+.adaptiveNoiseText {
+  color: turquoise !important;
+}
+
+#playPauseButtonAdaptiveNoise {
+  border: 2px solid turquoise;
+  padding: 5px;
+  border-radius: 100%;
+  cursor: pointer;
+  width: 2.5rem;
+}
+
+#adaptiveNoiseContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
 }
