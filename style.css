@@ -60,12 +60,12 @@ body {
 
 .bandContainerWrapper {
   width: 80%;
-  height: 100px;
+  height: 15%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 
 .bandContainer {
@@ -107,7 +107,7 @@ body {
 .button {
     border: 0.1rem solid var(--fontColor);
     border-radius: 10000rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.7rem 1.5rem;
     text-align: center;
     font-weight: bold;
     display: flex;
@@ -115,12 +115,14 @@ body {
     align-items: center;
     margin: 0.5rem 0;
     cursor: pointer;
+    height: 2rem;
+    font-size: 0.8rem;
 }
 
-.playPauseImg {
+.playPauseImgInButton {
     padding: 0;
     margin: 0 0 0 1rem;
-    width: 1.8rem;
+    width: 1.3rem;
 }
 
 .whiteNoiseButton {
@@ -135,7 +137,9 @@ body {
     background: #ac458d;
 }
 
-
+#playPauseButtonFreePlay {
+  width: 2rem !important;
+}
 
 
 
@@ -178,7 +182,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: start;
   padding-left: 3rem;
 }
@@ -188,7 +192,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: end;
   padding-right: 3rem;
 }
