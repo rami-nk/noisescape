@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/rami-nk/noisescape#readme",
   "dependencies": {
-    "brainflow": "^5.13.0"
+    "brainflow": "^5.13.0",
+    "chart.js": "^4.5.0"
   },
   "devDependencies": {
     "electron": "^36.4.0"

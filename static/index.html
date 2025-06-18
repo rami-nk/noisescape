@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="sliders.css">
 </head>
 <body>
+
     <div id="columns">
         <div class="column" id="column1">
             <p class="headline">EEG Bands:</p>
@@ -16,27 +17,29 @@
                     Connect OpenBCI Board
                 </div>
                 <div class="bandContainerWrapper">
-                <p id="deltaLabel">&#x03B4;</p>
-                <div id="deltaBand" class="bandContainer"></div>
-                </div>
-                <div class="bandContainerWrapper">
-                <p id="thetaLabel">&#x03B8;</p>
-                <div id="thetaBand" class="bandContainer"></div>
-                </div>
-                <div class="bandContainerWrapper">
-                <p id="alphaLabel">&#x03B1;</p>
-                <div id="alphaBand" class="bandContainer"></div>
-                </div>
-                <div class="bandContainerWrapper">
-                <p id="betaLabel">&#x03B2;</p>
-                <div id="betaBand" class="bandContainer"></div>
-                </div>
-                <div class="bandContainerWrapper">
-                <p id="gammaLabel">&#x03B3;</p>
-                <div id="gammaBand" class="bandContainer"></div>
+                    <p id="deltaLabel">&#x03B4;</p>
+                    <canvas id="deltaChart" width="200" height="100"></canvas>
                 </div>
 
-        
+                <div class="bandContainerWrapper">
+                    <p id="thetaLabel">&#x03B8;</p>
+                    <canvas id="thetaChart"></canvas>
+                </div>
+
+                <div class="bandContainerWrapper">
+                    <p id="alphaLabel">&#x03B1;</p>
+                    <canvas id="alphaChart"></canvas>
+                </div>
+
+                <div class="bandContainerWrapper">
+                    <p id="betaLabel">&#x03B2;</p>
+                    <canvas id="betaChart"></canvas>
+                </div>
+
+                <div class="bandContainerWrapper">
+                    <p id="gammaLabel">&#x03B3;</p>
+                    <canvas id="gammaChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -163,8 +166,56 @@
         <p>NoiseScape</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+
         const connectBCIButton = document.getElementById('connectBCIButton');
+
+        const deltaCtx = document.getElementById('deltaChart').getContext('2d');
+        const thetaCtx = document.getElementById('thetaChart').getContext('2d');
+        const alphaCtx = document.getElementById('alphaChart').getContext('2d');
+        const betaCtx = document.getElementById('betaChart').getContext('2d');
+        const gammaCtx = document.getElementById('gammaChart').getContext('2d');
+
+        const deltaChart = new Chart(deltaCtx, createBandChartConfig('Delta'));
+        const thetaChart = new Chart(thetaCtx, createBandChartConfig('Theta'));
+        const alphaChart = new Chart(alphaCtx, createBandChartConfig('Alpha'));
+        const betaChart = new Chart(betaCtx, createBandChartConfig('Beta'));
+        const gammaChart = new Chart(gammaCtx, createBandChartConfig('Gamma'));
+
+        function createBandChartConfig(label) {
+            return {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: label,
+                        data: [],
+                        borderColor: 'white',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    }]
+                },
+                options: {
+                    animation: false,
+                    responsive: true,
+                    elements: {
+                        point:{
+                            radius: 0
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+        }
 
         let connected = false;
 
@@ -180,14 +231,25 @@
             connectBCIButton.innerText = 'Disconnect';
         });
 
+        function updateChart(chart, value) {
+            const now = new Date().toLocaleTimeString();
+            chart.data.labels.push(now);
+            chart.data.datasets[0].data.push(value);
+
+            if (chart.data.labels.length > 30) { // keep last 30 points
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update();
+        }
+
         window.api.onBandPowers((bandPowers) => {
             console.log("Received band powers:", bandPowers);
-
-            document.getElementById("deltaBand").innerText = bandPowers.delta;
-            document.getElementById("thetaBand").innerText = bandPowers.theta;
-            document.getElementById("alphaBand").innerText = bandPowers.alpha;
-            document.getElementById("betaBand").innerText = bandPowers.beta;
-            document.getElementById("gammaBand").innerText = bandPowers.gamma;
+            updateChart(deltaChart, bandPowers.delta);
+            updateChart(thetaChart, bandPowers.theta);
+            updateChart(alphaChart, bandPowers.alpha);
+            updateChart(betaChart, bandPowers.beta);
+            updateChart(gammaChart, bandPowers.gamma);
         });
     </script>
 
