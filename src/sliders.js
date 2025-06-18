@@ -10,9 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const sliders = [
         { id: 'lowVolumeSlider', labelId: 'lowThumbLabel', defaultValue: 3 },

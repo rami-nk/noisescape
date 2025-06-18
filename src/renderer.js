@@ -1,7 +1,3 @@
-function sayHello() {
-  alert('Hello from renderer process!');
-}
-
 // Directory selection button functionality
 const folderButton = document.getElementById('folderButton');
 const stateButton = document.getElementById('stateToAchieveButton');

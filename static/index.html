@@ -162,7 +162,35 @@
         <p>NoiseScape</p>
     </div>
 
-    <script src="sliders.js"></script>
-    <script src="renderer.js"></script>
+    <script>
+        const connectBCIButton = document.getElementById('connectBCIButton');
+
+        let connected = false;
+
+        connectBCIButton.addEventListener('click', () => {
+            if (connected) {
+                window.api.disconnectFromOpenBciBoard();
+                connectBCIButton.innerText = 'Connect OpenBCI Board';
+                connected = false;
+                return;
+            }
+            window.api.connectToOpenBciBoard();
+            connected = true;
+            connectBCIButton.innerText = 'Disconnect';
+        });
+
+        window.api.onBandPowers((bandPowers) => {
+            console.log("Received band powers:", bandPowers);
+
+            document.getElementById("deltaBand").innerText = bandPowers.delta;
+            document.getElementById("thetaBand").innerText = bandPowers.theta;
+            document.getElementById("alphaBand").innerText = bandPowers.alpha;
+            document.getElementById("betaBand").innerText = bandPowers.beta;
+            document.getElementById("gammaBand").innerText = bandPowers.gamma;
+        });
+    </script>
+
+    <script src="../src/sliders.js"></script>
+    <script src="../src/renderer.js"></script>
 </body>
 </html>

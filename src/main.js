@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
+const {connectToBoard, disconnectFromBoard} = require("./openbci/client");
 
 // Store the current working directory and state
 let currentWorkingDir = app.getPath('documents');
@@ -32,10 +33,19 @@ ipcMain.handle('set-state', (event, state) => {
   return false;
 });
 
+ipcMain.on('connect-to-openbci-board', async () => {
+  const win = BrowserWindow.getFocusedWindow();
+  await connectToBoard(win);
+});
+
+ipcMain.on('disconnect-from-openbci-board', async () => {
+  await disconnectFromBoard();
+});
+
 function createWindow () {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -43,7 +53,7 @@ function createWindow () {
     }
   });
 
-  win.loadFile('index.html');
+  win.loadFile(path.join('static', 'index.html'));
 }
 
 app.whenReady().then(() => {
