@@ -65,19 +65,19 @@ The development of \textit{NoiseScape} followed a parallel path to the experimen
 
 \subsection{Graphical User Interface (GUI)}
 
-The GUI is divided into three equally sized vertical panels and a bottom control row spanning the entire width, as well as a footer. The design follows a modern flat aesthetic with a dark grey background, bold white fonts, white-bordered elements, and soft border radii.
+The graphical user interface (GUI) is organized into three equally sized vertical panels, a bottom control bar spanning the full width of the window, and a footer section. This layout provides a clear division of functionality and supports structured experimental workflows.
 
 \begin{itemize}
-\item \textbf{Left \textendash{} EEG Frequency Bands}: Displays real-time power across the five standard EEG bands: Delta, Theta, Alpha, Beta, and Gamma. Each band is represented visually with bold white fonts and waveforms within bordered boxes.
+\item \textbf{Left Panel \textendash{} - EEG Monitor:}: Displays real-time power across the five standard EEG bands: Delta, Theta, Alpha, Beta, and Gamma. Each band is represented visually with bold white fonts and waveforms within bordered boxes.
 
-\item \textbf{Center \textendash{} Noise Sound (Free Play Mode)}: Features a visual audio spectrum analyzer (20 Hz\textendash{}20 kHz) with ten vertical rainbow-colored sliders (from red to pink). These allow manual spectral shaping of noise, all sliders defaulting to a neutral center. Below the sliders:
+\item \textbf{Center Panel \textendash{} - Noise Sound (Free Play Mode)}: Features a visual audio spectrum analyzer (20 Hz\textendash{}20 kHz) with ten vertical rainbow-colored sliders (from red to pink). These allow manual spectral shaping of noise, all sliders defaulting to a neutral center. Below the sliders:
 \begin{itemize}
 \item A white horizontal volume slider (range 1\textendash{}9) with a circular knob, curved border, and visual indication of volume.
 \item A section titled \textbf{Defined Volumes} with three identical sliders labeled Low, Middle, and High. These are reference points for subjective volume perception and do not influence playback.
 \item A section titled \textbf{Adaptive Noise Sound} (in turquoise). Below it, a turquoise Play button becomes active only once all study conditions and baseline data have been logged. This feature plays the best noise configuration based on EEG patterns (e.g., highest alpha activity for the selected state).
 \end{itemize}
 
-\item \textbf{Right \textendash{} Study Mode}: Contains nine pre-configured buttons grouped by noise type and volume level:
+\item \textbf{RightPanel  \textendash{} - Study Mode}: Contains nine pre-configured buttons grouped by noise type and volume level:
 \begin{itemize}
 \item \textbf{White Noise (white)}: Low, Middle, High
 \item \textbf{Right-Skewed Noise (modern red)}: Emphasizes lower frequencies (slider ramp from red high to pink low).
