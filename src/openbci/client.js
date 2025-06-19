@@ -9,10 +9,20 @@ let streamInterval = null;
 let board = null;
 
 const connectToBoard = async (mainWindow) => {
-    const boardId = BoardIds.CYTON_BOARD;
-    board = new BoardShim(boardId, {
-        serialPort: '/dev/cu.usbserial-DN0093R0'
-    });
+    const boardType = process.env.BOARD_TYPE || "synthetic";
+    let boardId;
+    switch (boardType) {
+        case "synthetic": {
+            boardId = BoardIds.SYNTHETIC_BOARD;
+            board = new BoardShim(boardId, {});
+            break;
+        }
+        case "cyton": {
+            const serialPort = process.env.SERIAL_PORT || '/dev/cu.usbserial-DN0093R0';
+            boardId = BoardIds.CYTON_BOARD;
+            board = new BoardShim(boardId, {serialPort});
+        }
+    }
 
     board.prepareSession();
     console.log("Session prepared.");
