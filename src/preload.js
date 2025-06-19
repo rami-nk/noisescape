@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld(
         onBciDisconnectionFailed: (callback) => ipcRenderer.on('bci-disconnection-failed', (_, msg) => callback(msg)),
         onBciConnectionPreparing: (callback) => ipcRenderer.on('bci-connection-prepare', (_, msg) => callback(msg)),
         onBciDisconnectionPreparing: (callback) => ipcRenderer.on('bci-disconnection-prepare', (_, msg) => callback(msg)),
+        onBciLogMessage: (callback) => ipcRenderer.on('bci-log-message', (_, msg) => callback(msg)),
         onBandPowers: (callback) => ipcRenderer.on('band-powers', (event, data) => callback(data))
     }
 );

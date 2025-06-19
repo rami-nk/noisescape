@@ -175,6 +175,11 @@
     <div id="footer">
         <img src="assets/logo.png" alt="Logo" class="logo">
         <p>NoiseScape</p>
+        <button id="toggleLogsButton">Logs ▼</button>
+    </div>
+
+    <div id="logPanel" class="hidden">
+        <pre id="logContent"></pre>
     </div>
 
     <div id="errorToast" class="toast"></div>
@@ -324,6 +329,29 @@
             updateChart(alphaChart, bandPowers.alpha);
             updateChart(betaChart, bandPowers.beta);
             updateChart(gammaChart, bandPowers.gamma);
+        });
+
+        const toggleLogsButton = document.getElementById('toggleLogsButton');
+        const logPanel = document.getElementById('logPanel');
+
+        toggleLogsButton.addEventListener('click', () => {
+            logPanel.classList.toggle('hidden');
+        });
+
+        function appendLog(message) {
+            const logContent = document.getElementById('logContent');
+            logContent.textContent += message + '\n';
+
+            const lines = logContent.textContent.split('\n');
+            if (lines.length > 500) {
+                logContent.textContent = lines.slice(-500).join('\n');
+            }
+
+            logPanel.scrollTop = logPanel.scrollHeight;
+        }
+
+        window.api.onBciLogMessage((message) => {
+            appendLog(message);
         });
     </script>
 

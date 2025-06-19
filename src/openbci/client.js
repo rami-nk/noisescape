@@ -28,11 +28,15 @@ const connectToBoard = async (mainWindow) => {
 
         mainWindow.webContents.send('bci-connection-prepare');
 
+        logToFrontend(mainWindow, "Preparing session...")
         board.prepareSession();
-        console.log("Session prepared.");
+        logToFrontend(mainWindow, "Session prepared.")
+        logToFrontend(mainWindow, "Starting streaming session ...")
         board.startStream();
-        console.log("Streaming started.");
+        logToFrontend(mainWindow, "Streaming started.")
+        logToFrontend(mainWindow, "Warmup connection ...")
         await sleep(1000);
+        logToFrontend(mainWindow, "Warmup done.")
 
         const eegChannels = BoardShim.getEegChannels(boardId);
         const samplingRate = BoardShim.getSamplingRate(boardId);
@@ -55,11 +59,19 @@ const connectToBoard = async (mainWindow) => {
                     WindowOperations.HANNING
                 );
 
-                bandPowers.delta += DataFilter.getBandPower([psd, freq], 2, 4);
-                bandPowers.theta += DataFilter.getBandPower([psd, freq], 4, 7);
-                bandPowers.alpha += DataFilter.getBandPower([psd, freq], 7, 12);
-                bandPowers.beta += DataFilter.getBandPower([psd, freq], 12, 29);
-                bandPowers.gamma += DataFilter.getBandPower([psd, freq], 29, 100);
+                const delta = DataFilter.getBandPower([psd, freq], 2, 4);
+                const theta = DataFilter.getBandPower([psd, freq], 4, 7);
+                const alpha = DataFilter.getBandPower([psd, freq], 7, 12);
+                const beta = DataFilter.getBandPower([psd, freq], 12, 29);
+                const gamma = DataFilter.getBandPower([psd, freq], 29, 100);
+
+                bandPowers.delta += delta;
+                bandPowers.theta += theta;
+                bandPowers.alpha += alpha;
+                bandPowers.beta += beta;
+                bandPowers.gamma += gamma;
+
+                logToFrontend(mainWindow, `Channel ${channel}: { delta: ${delta}, theta: ${theta}, alpha: ${alpha}, beta: ${beta}, gamma: ${gamma} }`)
                 validChannels++;
             }
 
@@ -68,10 +80,13 @@ const connectToBoard = async (mainWindow) => {
                     bandPowers[key] = Number((bandPowers[key] / validChannels).toFixed(2));
                 }
                 mainWindow.webContents.send('band-powers', bandPowers);
+
+                logToFrontend(mainWindow, `Averaged: { delta: ${bandPowers.delta}, theta: ${bandPowers.theta}, alpha: ${bandPowers.alpha}, beta: ${bandPowers.beta}, gamma: ${bandPowers.gamma} }`)
             }
         }, 1000);
 
         mainWindow.webContents.send('bci-connection-success');
+        logToFrontend(mainWindow, "Connection successful.")
 
     } catch (error) {
         console.error("Error during connection:", error);
@@ -80,6 +95,7 @@ const connectToBoard = async (mainWindow) => {
 };
 
 const disconnectFromBoard = async (mainWindow) => {
+    logToFrontend(mainWindow, "Disconnecting ...")
     mainWindow.webContents.send('bci-disconnection-prepare');
     try {
         if (streamInterval) {
@@ -92,11 +108,17 @@ const disconnectFromBoard = async (mainWindow) => {
             console.log("Board disconnected.");
             board = null;
             mainWindow.webContents.send('bci-disconnected');
+            logToFrontend(mainWindow, "Connection successfully closed.")
         }
     } catch (error) {
         console.error("Error during disconnect:", error);
         mainWindow.webContents.send('bci-disconnection-failed', error.message);
     }
+};
+
+const logToFrontend = (mainWindow, message) => {
+    console.log(message);
+    mainWindow.webContents.send('bci-log-message', `[openbci-client] ${message}`);
 };
 
 module.exports = { connectToBoard, disconnectFromBoard };
