@@ -1,5 +1,5 @@
 const {BoardIds, BoardShim, DataFilter, WindowOperations} = require("brainflow");
-const { ipcMain } = require('electron');  // Import ipcMain here
+const { ipcMain } = require('electron');
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -9,8 +9,10 @@ let streamInterval = null;
 let board = null;
 
 const connectToBoard = async (mainWindow) => {
-    const boardId = BoardIds.SYNTHETIC_BOARD;
-    board = new BoardShim(boardId, {});
+    const boardId = BoardIds.CYTON_BOARD;
+    board = new BoardShim(boardId, {
+        serialPort: '/dev/cu.usbserial-DN0093R0'
+    });
 
     board.prepareSession();
     console.log("Session prepared.");

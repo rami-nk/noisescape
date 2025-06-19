@@ -50,7 +50,6 @@ body {
 
 #allBandsContainer {
   width: 80%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,16 +57,34 @@ body {
   padding-left: 4rem;
 }
 
+.bandLabelContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 390px;
+}
+
 .bandContainerWrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 0.5rem 0;
-  border: 1px solid white;
-  border-radius: 15px;
+    padding: 5px;
+    width: 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0;
+    border: 1px solid white;
+    border-radius: 15px;
+}
+
+.bandContainerWrapper canvas {
+    width: 100%;
+}
+
+.bandLabelContainer p {
+    text-wrap: nowrap;
 }
 
 .bandContainer {
@@ -94,9 +111,6 @@ body {
   justify-content: start;
   align-items: center;;
 }
-
-
-
 
 .headline {
     font-size: 1.4rem;

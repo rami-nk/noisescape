@@ -16,29 +16,40 @@
                 <div class="button" id="connectBCIButton">
                     Connect OpenBCI Board
                 </div>
-                <div class="bandContainerWrapper">
-                    <p id="deltaLabel">&#x03B4;</p>
-                    <canvas id="deltaChart" width="200" height="100"></canvas>
+
+                <div class="bandLabelContainer">
+                    <p id="deltaLabel">Delta (&#x03B4;)</p>
+                    <div class="bandContainerWrapper">
+                        <canvas id="deltaChart" style="width: 100%; height: 80px;"></canvas>
+                    </div>
                 </div>
 
-                <div class="bandContainerWrapper">
-                    <p id="thetaLabel">&#x03B8;</p>
-                    <canvas id="thetaChart"></canvas>
+                <div class="bandLabelContainer">
+                    <p id="thetaLabel">Theta (&#x03B8;)</p>
+                    <div class="bandContainerWrapper">
+                        <canvas id="thetaChart" style="width: 100%; height: 80px;"></canvas>
+                    </div>
                 </div>
 
-                <div class="bandContainerWrapper">
-                    <p id="alphaLabel">&#x03B1;</p>
-                    <canvas id="alphaChart"></canvas>
+                <div class="bandLabelContainer">
+                    <p id="alphaLabel">Alpha (&#x03B1;)</p>
+                    <div class="bandContainerWrapper">
+                        <canvas id="alphaChart" style="width: 100%; height: 80px;"></canvas>
+                    </div>
                 </div>
 
-                <div class="bandContainerWrapper">
-                    <p id="betaLabel">&#x03B2;</p>
-                    <canvas id="betaChart"></canvas>
+                <div class="bandLabelContainer">
+                    <p id="betaLabel">Beta (&#x03B2;)</p>
+                    <div class="bandContainerWrapper">
+                        <canvas id="betaChart"  style="width: 100%; height: 80px;"></canvas>
+                    </div>
                 </div>
 
-                <div class="bandContainerWrapper">
-                    <p id="gammaLabel">&#x03B3;</p>
-                    <canvas id="gammaChart"></canvas>
+                <div class="bandLabelContainer">
+                    <p id="gammaLabel">Gamma (&#x03B3;)</p>
+                    <div class="bandContainerWrapper">
+                        <canvas id="gammaChart"  style="width: 100%; height: 80px;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,19 +188,18 @@
         const betaCtx = document.getElementById('betaChart').getContext('2d');
         const gammaCtx = document.getElementById('gammaChart').getContext('2d');
 
-        const deltaChart = new Chart(deltaCtx, createBandChartConfig('Delta'));
-        const thetaChart = new Chart(thetaCtx, createBandChartConfig('Theta'));
-        const alphaChart = new Chart(alphaCtx, createBandChartConfig('Alpha'));
-        const betaChart = new Chart(betaCtx, createBandChartConfig('Beta'));
-        const gammaChart = new Chart(gammaCtx, createBandChartConfig('Gamma'));
+        const deltaChart = new Chart(deltaCtx, createBandChartConfig());
+        const thetaChart = new Chart(thetaCtx, createBandChartConfig());
+        const alphaChart = new Chart(alphaCtx, createBandChartConfig());
+        const betaChart = new Chart(betaCtx, createBandChartConfig());
+        const gammaChart = new Chart(gammaCtx, createBandChartConfig());
 
-        function createBandChartConfig(label) {
+        function createBandChartConfig() {
             return {
                 type: 'line',
                 data: {
                     labels: [],
                     datasets: [{
-                        label: label,
                         data: [],
                         borderColor: 'white',
                         borderWidth: 2,
@@ -203,6 +213,11 @@
                     elements: {
                         point:{
                             radius: 0
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     },
                     scales: {
