@@ -1,93 +1,102 @@
-const {BoardIds, BoardShim, DataFilter, WindowOperations} = require("brainflow");
+const { BoardIds, BoardShim, DataFilter, WindowOperations } = require("brainflow");
 const { ipcMain } = require('electron');
 
-const sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 let streamInterval = null;
 let board = null;
 
 const connectToBoard = async (mainWindow) => {
-    const boardType = process.env.BOARD_TYPE || "synthetic";
-    let boardId;
-    switch (boardType) {
-        case "synthetic": {
-            boardId = BoardIds.SYNTHETIC_BOARD;
-            board = new BoardShim(boardId, {});
-            break;
+    try {
+        const boardType = process.env.BOARD_TYPE || "synthetic";
+        let boardId;
+        switch (boardType) {
+            case "synthetic": {
+                boardId = BoardIds.SYNTHETIC_BOARD;
+                board = new BoardShim(boardId, {});
+                break;
+            }
+            case "cyton": {
+                const serialPort = process.env.SERIAL_PORT || '/dev/cu.usbserial-DN0093R0';
+                boardId = BoardIds.CYTON_BOARD;
+                board = new BoardShim(boardId, { serialPort });
+                break;
+            }
+            default:
+                throw new Error(`Unknown board type: ${boardType}`);
         }
-        case "cyton": {
-            const serialPort = process.env.SERIAL_PORT || '/dev/cu.usbserial-DN0093R0';
-            boardId = BoardIds.CYTON_BOARD;
-            board = new BoardShim(boardId, {serialPort});
-        }
-    }
 
-    board.prepareSession();
-    console.log("Session prepared.");
+        mainWindow.webContents.send('bci-connection-prepare');
 
-    board.startStream();
-    console.log("Streaming started.");
+        board.prepareSession();
+        console.log("Session prepared.");
+        board.startStream();
+        console.log("Streaming started.");
+        await sleep(1000);
 
-    await sleep(5000);
+        const eegChannels = BoardShim.getEegChannels(boardId);
+        const samplingRate = BoardShim.getSamplingRate(boardId);
+        const windowSize = 128;
 
-    const eegChannels = BoardShim.getEegChannels(boardId);
-    const samplingRate = BoardShim.getSamplingRate(boardId);
-    const windowSize = 128;
+        streamInterval = setInterval(() => {
+            const data = board.getCurrentBoardData(windowSize);
+            let bandPowers = { delta: 0, theta: 0, alpha: 0, beta: 0, gamma: 0 };
+            let validChannels = 0;
 
-    streamInterval = setInterval(() => {
-        const data = board.getCurrentBoardData(windowSize);
-        let bandPowers = {delta: 0, theta: 0, alpha: 0, beta: 0, gamma: 0};
-        let validChannels = 0;
+            for (const channel of eegChannels) {
+                const channelData = data[channel];
+                if (!channelData || channelData.length < windowSize) continue;
 
-        for (const channel of eegChannels) {
-            const channelData = data[channel];
+                const [psd, freq] = DataFilter.getPsdWelch(
+                    channelData,
+                    windowSize,
+                    Math.floor(windowSize / 2),
+                    samplingRate,
+                    WindowOperations.HANNING
+                );
 
-            if (!channelData || channelData.length < windowSize) {
-                console.log(`Not enough data for channel ${channel}, only ${channelData.length} samples available`);
-                continue;
+                bandPowers.delta += DataFilter.getBandPower([psd, freq], 2, 4);
+                bandPowers.theta += DataFilter.getBandPower([psd, freq], 4, 7);
+                bandPowers.alpha += DataFilter.getBandPower([psd, freq], 7, 12);
+                bandPowers.beta += DataFilter.getBandPower([psd, freq], 12, 29);
+                bandPowers.gamma += DataFilter.getBandPower([psd, freq], 29, 100);
+                validChannels++;
             }
 
-            const [psd, freq] = DataFilter.getPsdWelch(
-                channelData,
-                windowSize,
-                Math.floor(windowSize / 2),
-                samplingRate,
-                WindowOperations.HANNING
-            );
-
-            bandPowers.delta = DataFilter.getBandPower([psd, freq], 2, 4);
-            bandPowers.theta = DataFilter.getBandPower([psd, freq], 4, 7);
-            bandPowers.alpha = DataFilter.getBandPower([psd, freq], 7, 12);
-            bandPowers.beta = DataFilter.getBandPower([psd, freq], 12, 29);
-            bandPowers.gamma = DataFilter.getBandPower([psd, freq], 29, 100);
-            validChannels++;
-            console.log(`Channel ${channel}: Δ=${bandPowers.delta.toFixed(2)} Θ=${bandPowers.theta.toFixed(2)} α=${bandPowers.alpha.toFixed(2)} β=${bandPowers.beta.toFixed(2)} γ=${bandPowers.gamma.toFixed(2)}`);
-        }
-
-        if (validChannels > 0) {
-            for (let key in bandPowers) {
-                bandPowers[key] /= validChannels;
-                bandPowers[key] = Number(bandPowers[key].toFixed(2));
+            if (validChannels > 0) {
+                for (let key in bandPowers) {
+                    bandPowers[key] = Number((bandPowers[key] / validChannels).toFixed(2));
+                }
+                mainWindow.webContents.send('band-powers', bandPowers);
             }
-            mainWindow.webContents.send('band-powers', bandPowers);
-            console.log("Sent:", bandPowers);
+        }, 1000);
+
+        mainWindow.webContents.send('bci-connection-success');
+
+    } catch (error) {
+        console.error("Error during connection:", error);
+        mainWindow.webContents.send('bci-connection-failed', error.message);
+    }
+};
+
+const disconnectFromBoard = async (mainWindow) => {
+    mainWindow.webContents.send('bci-disconnection-prepare');
+    try {
+        if (streamInterval) {
+            clearInterval(streamInterval);
+            streamInterval = null;
         }
-    }, 1000);
-}
-
-const disconnectFromBoard = async () => {
-    if (streamInterval) {
-        clearInterval(streamInterval);
-        streamInterval = null;
+        if (board) {
+            await board.stopStream();
+            await board.releaseSession();
+            console.log("Board disconnected.");
+            board = null;
+            mainWindow.webContents.send('bci-disconnected');
+        }
+    } catch (error) {
+        console.error("Error during disconnect:", error);
+        mainWindow.webContents.send('bci-disconnection-failed', error.message);
     }
-    if (board) {
-        await board.stopStream();
-        await board.releaseSession();
-        console.log("Board disconnected and session released.");
-        board = null;
-    }
-}
+};
 
-module.exports = {connectToBoard, disconnectFromBoard};
+module.exports = { connectToBoard, disconnectFromBoard };

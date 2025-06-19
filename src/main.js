@@ -39,7 +39,8 @@ ipcMain.on('connect-to-openbci-board', async () => {
 });
 
 ipcMain.on('disconnect-from-openbci-board', async () => {
-  await disconnectFromBoard();
+  const win = BrowserWindow.getFocusedWindow();
+  await disconnectFromBoard(win);
 });
 
 function createWindow () {

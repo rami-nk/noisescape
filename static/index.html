@@ -177,11 +177,10 @@
         <p>NoiseScape</p>
     </div>
 
+    <div id="errorToast" class="toast"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-
-        const connectBCIButton = document.getElementById('connectBCIButton');
-
         const deltaCtx = document.getElementById('deltaChart').getContext('2d');
         const thetaCtx = document.getElementById('thetaChart').getContext('2d');
         const alphaCtx = document.getElementById('alphaChart').getContext('2d');
@@ -232,26 +231,86 @@
             };
         }
 
+        const connectBCIButton = document.getElementById('connectBCIButton');
+        const errorToast = document.getElementById('errorToast');
+
         let connected = false;
+
+        function updateButtonState(state) {
+            switch (state) {
+                case 'connecting':
+                    connectBCIButton.innerText = 'Connecting...';
+                    connectBCIButton.disabled = true;
+                    connectBCIButton.style.opacity = 0.5;
+                    break;
+                case 'connected':
+                    connectBCIButton.innerText = 'Disconnect';
+                    connectBCIButton.disabled = false;
+                    connectBCIButton.style.opacity = 1;
+                    connected = true;
+                    break;
+                case 'disconnected':
+                    connectBCIButton.innerText = 'Connect OpenBCI Board';
+                    connectBCIButton.disabled = false;
+                    connectBCIButton.style.opacity = 1;
+                    connected = false;
+                    break;
+                case 'disconnecting':
+                    connectBCIButton.innerText = 'Disconnecting...';
+                    connectBCIButton.disabled = true;
+                    connectBCIButton.style.opacity = 0.5;
+                    break;
+            }
+        }
+
+        window.api.onBciConnectionPreparing(() => {
+            updateButtonState('connecting');
+        });
+
+        window.api.onBciDisconnectionPreparing(() => {
+            updateButtonState('disconnecting');
+        });
+
+        window.api.onBciConnectionSuccess(() => {
+            updateButtonState('connected');
+        });
+
+        window.api.onBciConnectionFailed((errorMessage) => {
+            updateButtonState('disconnected');
+            showErrorToast(errorMessage);
+        });
+
+        window.api.onBciDisconnected(() => {
+            updateButtonState('disconnected');
+        });
+
+        window.api.onBciDisconnectionFailed((errorMessage) => {
+            updateButtonState('disconnected');
+            showErrorToast(errorMessage);
+        });
 
         connectBCIButton.addEventListener('click', () => {
             if (connected) {
                 window.api.disconnectFromOpenBciBoard();
-                connectBCIButton.innerText = 'Connect OpenBCI Board';
-                connected = false;
-                return;
+            } else {
+                window.api.connectToOpenBciBoard();
             }
-            window.api.connectToOpenBciBoard();
-            connected = true;
-            connectBCIButton.innerText = 'Disconnect';
         });
+
+        function showErrorToast(message) {
+            errorToast.innerText = message;
+            errorToast.classList.add('visible');
+            setTimeout(() => {
+                errorToast.classList.remove('visible');
+            }, 5000);
+        }
 
         function updateChart(chart, value) {
             const now = new Date().toLocaleTimeString();
             chart.data.labels.push(now);
             chart.data.datasets[0].data.push(value);
 
-            if (chart.data.labels.length > 30) { // keep last 30 points
+            if (chart.data.labels.length > 30) {
                 chart.data.labels.shift();
                 chart.data.datasets[0].data.shift();
             }
