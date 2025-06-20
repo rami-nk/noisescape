@@ -67,10 +67,24 @@ stateButton.addEventListener('click', () => {
     dropdownMenu.style.top = `${buttonRect.bottom + window.scrollY}px`;
     dropdownMenu.style.left = `${buttonRect.left + window.scrollX}px`;
     dropdownMenu.style.display = 'block';
+    dropdownMenu.style.border = '0.1rem solid var(--fontColor)';
+    dropdownMenu.style.borderTop = 'none';
+    dropdownMenu.style.borderRight = 'none';
+    dropdownMenu.style.borderRadius = '10px';
+    dropdownMenu.style.fontSize = '0.7rem';
+    dropdownMenu.style.fontWeight = 'bold';
     isDropdownVisible = true;
+    
+    // Update arrow to point up when dropdown is open
+    const currentText = stateButton.textContent.replace(' ▼', '').replace(' ▲', '');
+    stateButton.textContent = `${currentText} ▲`;
   } else {
     dropdownMenu.style.display = 'none';
     isDropdownVisible = false;
+    
+    // Update arrow to point down when dropdown is closed
+    const currentText = stateButton.textContent.replace(' ▼', '').replace(' ▲', '');
+    stateButton.textContent = `${currentText} ▼`;
   }
 });
 

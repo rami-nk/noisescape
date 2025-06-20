@@ -174,7 +174,7 @@
     </div>
     <div id="footer">
         <img src="assets/logo.png" alt="Logo" class="logo">
-        <p>NoiseScape</p>
+        <p>NoiseScape&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
         <button id="toggleLogsButton">Logs ▼</button>
     </div>
 
@@ -336,6 +336,13 @@
 
         toggleLogsButton.addEventListener('click', () => {
             logPanel.classList.toggle('hidden');
+            
+            // Update arrow direction based on panel state
+            if (logPanel.classList.contains('hidden')) {
+                toggleLogsButton.textContent = 'Logs ▼';
+            } else {
+                toggleLogsButton.textContent = 'Logs ▲';
+            }
         });
 
         function appendLog(message) {
