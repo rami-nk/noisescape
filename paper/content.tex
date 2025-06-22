@@ -55,50 +55,17 @@ The main analytical goal is to compare alpha power across all conditions. By exa
 
 \subsection{System Architecture and Technologies}
 
-The development of \textit{NoiseScape} followed a parallel path to the experiment design. Built using \texttt{Electron} with a \texttt{Node.js} backend, the desktop application runs on both macOS and Windows and is designed to guide users through the study in a structured and interactive way.
+The development of \textit{NoiseScape} proceeded in parallel with the experimental design. Implemented as a cross-platform desktop application using \texttt{Electron} with a \texttt{Node.js} backend, the system is compatible with macOS and Windows and guides users through the study in a structured and interactive way.
 
 \begin{itemize}
-\item \textbf{EEG Interface}: Streams real-time data from an OpenBCI device using \texttt{openbci-python}.
-\item \textbf{Noise Engine}: Generates broadband noise using \texttt{NumPy} and plays it via \texttt{sounddevice}.
-\item \textbf{Data Logging}: Stores EEG recordings and associated condition metadata in structured directories for later analysis.
+\item \textbf{EEG Interface:} Real-time EEG data is streamed from an OpenBCI board via a Python backend using \texttt{openbci-python}, integrated into the application through a Node.js bridge.
+\item \textbf{Noise Engine:} Broadband noise is generated using \texttt{NumPy}, spectrally shaped according to user-defined slider values, and played via the \texttt{sounddevice} library.
+\item \textbf{Data Logging:} EEG recordings, along with the associated condition metadata (e.g., noise type, volume level), are stored in a structured directory system selected by the user.
 \end{itemize}
 
 \subsection{Graphical User Interface (GUI)}
 
-The graphical user interface (GUI) is organized into three equally sized vertical panels, a bottom control bar spanning the full width of the window, and a footer section. This layout provides a clear division of functionality and supports structured experimental workflows.
-
-\begin{itemize}
-\item \textbf{Left Panel \textendash{} - EEG Monitor:}: Displays real-time power across the five standard EEG bands: Delta, Theta, Alpha, Beta, and Gamma. Each band is represented visually with bold white fonts and waveforms within bordered boxes.
-
-\item \textbf{Center Panel \textendash{} - Noise Sound (Free Play Mode)}: Features a visual audio spectrum analyzer (20 Hz\textendash{}20 kHz) with ten vertical rainbow-colored sliders (from red to pink). These allow manual spectral shaping of noise, all sliders defaulting to a neutral center. Below the sliders:
-\begin{itemize}
-\item A white horizontal volume slider (range 1\textendash{}9) with a circular knob, curved border, and visual indication of volume.
-\item A section titled \textbf{Defined Volumes} with three identical sliders labeled Low, Middle, and High. These are reference points for subjective volume perception and do not influence playback.
-\item A section titled \textbf{Adaptive Noise Sound} (in turquoise). Below it, a turquoise Play button becomes active only once all study conditions and baseline data have been logged. This feature plays the best noise configuration based on EEG patterns (e.g., highest alpha activity for the selected state).
-\end{itemize}
-
-\item \textbf{RightPanel  \textendash{} - Study Mode}: Contains nine pre-configured buttons grouped by noise type and volume level:
-\begin{itemize}
-\item \textbf{White Noise (white)}: Low, Middle, High
-\item \textbf{Right-Skewed Noise (modern red)}: Emphasizes lower frequencies (slider ramp from red high to pink low).
-\item \textbf{Left-Skewed Noise (modern pink)}: Emphasizes higher frequencies (slider ramp from pink high to red low).
-\end{itemize}
-Each button triggers a specific preset, starts the corresponding playback, and enables logging of EEG data with metadata.
-\end{itemize}
-
-The \textbf{bottom control row} includes:
-\begin{itemize}
-\item \textbf{Bottom Left}:
-\begin{itemize}
-\item \textbf{Set Root Path}: Opens a dialog for selecting the base directory for logs.
-\item \textbf{Select State to Achieve}: A dropdown labeled \textit{State to Achieve} (currently only: Relaxed).
-\end{itemize}
-\item \textbf{Bottom Right}:
-\begin{itemize}
-\item \textbf{Log EEG + NO Noise} (black button): Starts a 2-minute EEG recording only if no noise is currently playing. Saves EEG as baseline.
-\item \textbf{Log EEG + Noise} (green button): Records EEG and noise metadata for 2 minutes, only enabled if one of the study mode buttons is active.
-\end{itemize}
-\end{itemize}
+The graphical user interface is divided into three vertical columns, a control row spanning the full window width, and a footer section. This layout provides a clearly organized workspace that supports structured experimental procedures. The interface elements are numbered for clarity and to support referencing within figures.
 
 \begin{figure}[H]
 \centering
@@ -106,23 +73,56 @@ The \textbf{bottom control row} includes:
 \caption{Graphical user interface of the NoiseScape application.}
 \end{figure}
 
+\begin{enumerate}
+\item \textbf{EEG Bands (Left Column)}
 
-Noise profiles are derived from raw white noise shaped using slider presets:
+This panel displays real-time EEG power across five frequency bands: Delta ($\delta$), Theta ($\theta$), Alpha ($\alpha$), Beta ($\beta$), and Gamma ($\gamma$). Each band is visually represented within a bordered rectangular box and real-time EEG data is streamed from the connected OpenBCI device. A dedicated button labeled \texttt{Connect OpenBCI Board} initiates the device connection. \\
+
+\item \textbf{Noise Sound – Free Play Mode (Center Column)}
+
+This section allows manual control of noise spectrum playback through interactive elements:
+
+\begin{enumerate}
+  \item[(2a)] \textbf{Spectral Sliders (20 Hz–20 kHz):} Ten vertically arranged sliders are colored from left to right in rainbow hues (red, orange, yellow, green, turquoise, sky blue, dark blue, dark purple, light purple, pink). Each slider controls a specific frequency band of the white noise generator. When all sliders are centered (default), the full spectrum of white noise is played without weighting.
+
+  \item[(2b)] \textbf{Playback Controls:} Below the sliders is a horizontal white volume slider labeled with values from 1 to 9. To the right of this slider is a play button that toggles the current noise playback. When pressed, the noise corresponding to the current slider configuration is played at the defined volume level. The button icon switches between \texttt{play.svg} and \texttt{pause.svg} depending on the playback state.
+
+  \item[(2c)] \textbf{Defined Volumes:} Three additional horizontal sliders labeled \textit{Low}, \textit{Middle}, and \textit{High} are positioned below the main playback controls. These sliders allow the user to subjectively define what is perceived as low, medium, or high volume. They do not affect the actual playback volume but are referenced by the predefined study modes in the right column.
+
+  \item[(2d)] \textbf{Adaptive Noise Scape:} Below the defined volume section is a turquoise-colored button labeled \textit{Adaptive Noise Scape}. This button remains inactive until all nine study buttons (Section 3) and the baseline EEG condition (Section 4) have been completed and logged. Once enabled, it plays the noise configuration (as defined by the sliders and volume) that best matches the EEG patterns associated with the currently selected cognitive state (e.g., relaxed). \\
+\end{enumerate}
+
+\item \textbf{Study Mode (Right Column)}
+
+The application supports three main types of spectral profiles, each derived from the same white noise base signal using the ten rainbow-colored sliders:
 
 \begin{itemize}
-\item \textbf{White Noise}: All sliders centered to produce a flat frequency spectrum.
-\item \textbf{Right-Skewed Noise}: Linearly emphasizes lower frequencies by gradually lowering slider values from left to right.
-\item \textbf{Left-Skewed Noise}: Linearly emphasizes higher frequencies by raising slider values from left to right.
+\item \textbf{White Noise:} All sliders are set to the middle position, resulting in a flat and unweighted frequency spectrum.
+\item \textbf{Right-Skewed Noise:} Slider values decrease linearly from left (red) to right (pink), emphasizing low-frequency components.
+\item \textbf{Left-Skewed Noise:} Slider values increase linearly from left to right, emphasizing high-frequency components.
 \end{itemize}
 
-When a study condition is activated, playback is updated with the respective configuration, and EEG data is saved with a descriptive label (e.g., \texttt{pink\_high}, \texttt{white\_low}, \texttt{baseline}).
+Activating a study button sets the corresponding profile and enables logging of both the EEG data and the noise condition. The data is stored under structured filenames (e.g., \texttt{white\_low}, \texttt{left\_skewed\_middle}, \texttt{baseline}). \\
 
-The Adaptive Noise button uses previously collected EEG data to select or interpolate a configuration that best aligns with the desired mental state (e.g., Relaxed).
+\item \textbf{Control Row (Bottom Section)}
 
+This horizontal section spans the full width of the application and includes controls for file path selection, target state selection, and EEG recording.
 
+\begin{itemize}
+\item \textbf{Bottom Left:}
+  \begin{itemize}
+    \item \texttt{Set Root Path:} Opens a dialog allowing the user to select the root directory in which EEG data and metadata will be stored.
+    \item \texttt{Select State to Achieve:} A dropdown menu labeled \textit{State to Achieve}, currently limited to the value \textit{Relaxed}, allows the user to define the target state for adaptive noise optimization.
+  \end{itemize}
 
+\item \textbf{Bottom Right:}
+  \begin{itemize}
+    \item \texttt{Log EEG + NO Noise (black button):} Starts a 2-minute EEG recording without any noise playback. This button is only active when no sound is currently playing. The resulting EEG data is saved under the label \texttt{baseline}.
+    \item \texttt{Log EEG + Noise (green button):} Starts a 2-minute EEG recording and logs both the EEG signal and the metadata of the currently playing noise condition. This button is only enabled if one of the nine study buttons is active.
+  \end{itemize}
+\end{itemize}
 
-
+\end{enumerate}
 
 
 
