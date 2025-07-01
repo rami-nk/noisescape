@@ -1,20 +1,4 @@
-// Directory selection button functionality
-const folderButton = document.getElementById('folderButton');
 const stateButton = document.getElementById('stateToAchieveButton');
-
-// Initialize the folder button with the default path
-folderButton.textContent = 'Folder: ...';
-
-// Handle directory selection
-folderButton.addEventListener('click', async () => {
-  const selectedPath = await window.api.selectDirectory();
-  if (selectedPath) {
-    // Display only the last part of the path
-    const pathParts = selectedPath.split(/[\\/]/);
-    const displayPath = pathParts[pathParts.length - 1];
-    folderButton.textContent = `Folder: ${displayPath}`;
-  }
-});
 
 // Handle state selection
 let isDropdownVisible = false;
@@ -106,15 +90,15 @@ const thumbLabel = document.getElementById('thumbLabel');
 
 // Study buttons
 const studyButtons = [
-  { id: 'whiteNoiseLowButton',   type: 'white',  volumeId: 'lowVolumeSlider' },
-  { id: 'whiteNoiseMiddleButton',type: 'white',  volumeId: 'middleVolumeSlider' },
-  { id: 'whiteNoiseHighButton',  type: 'white',  volumeId: 'highVolumeSlider' },
-  { id: 'rightSkewedNoiseLowButton',   type: 'right', volumeId: 'lowVolumeSlider' },
-  { id: 'rightSkewedNoiseMiddleButton',type: 'right', volumeId: 'middleVolumeSlider' },
-  { id: 'rightSkewedNoiseHighButton',  type: 'right', volumeId: 'highVolumeSlider' },
-  { id: 'leftSkewedNoiseLowButton',   type: 'left', volumeId: 'lowVolumeSlider' },
-  { id: 'leftSkewedNoiseMiddleButton',type: 'left', volumeId: 'middleVolumeSlider' },
-  { id: 'leftSkewedNoiseHighButton',  type: 'left', volumeId: 'highVolumeSlider' },
+  { id: "whiteNoiseLowButton",    noiseType: "white", volumeSetting: "low",    type: 'white', volumeId: 'lowVolumeSlider' },
+  { id: "whiteNoiseMiddleButton", noiseType: "white", volumeSetting: "middle", type: 'white', volumeId: 'middleVolumeSlider' },
+  { id: "whiteNoiseHighButton",   noiseType: "white", volumeSetting: "high",   type: 'white', volumeId: 'highVolumeSlider' },
+  { id: "rightSkewedNoiseLowButton",    noiseType: "brown", volumeSetting: "low",    type: 'right', volumeId: 'lowVolumeSlider' },
+  { id: "rightSkewedNoiseMiddleButton", noiseType: "brown", volumeSetting: "middle", type: 'right', volumeId: 'middleVolumeSlider' },
+  { id: "rightSkewedNoiseHighButton",   noiseType: "brown", volumeSetting: "high",   type: 'right', volumeId: 'highVolumeSlider' },
+  { id: "leftSkewedNoiseLowButton",     noiseType: "pink",  volumeSetting: "low",    type: 'left', volumeId: 'lowVolumeSlider' },
+  { id: "leftSkewedNoiseMiddleButton",  noiseType: "pink",  volumeSetting: "middle", type: 'left', volumeId: 'middleVolumeSlider' },
+  { id: "leftSkewedNoiseHighButton",    noiseType: "pink",  volumeSetting: "high",   type: 'left', volumeId: 'highVolumeSlider' }
 ];
 
 // Helper: Set all vertical sliders to a value (0-100)
@@ -257,9 +241,19 @@ volumeSlider.addEventListener('input', () => {
 });
 
 // ================= STUDY MODE LOGIC ===================
-studyButtons.forEach(({ id, type, volumeId }) => {
+let enableLogging = false;
+let noiseType;
+let volumeSetting;
+
+studyButtons.forEach(({ id, type, volumeId, noiseType: noise, volumeSetting: vol  }) => {
   const btn = document.getElementById(id);
   btn.addEventListener('click', () => {
+
+    noiseType = noise;
+    volumeSetting = vol;
+    const img = document.getElementById(`${id}Img`);
+    const isPlaying = img.src.includes("pause");
+    img.src = isPlaying ?  "assets/play.svg" : "assets/pause.svg";
     // If this button is already active, stop
     if (currentStudyButton === id) {
       stopNoise();
@@ -292,6 +286,282 @@ studyButtons.forEach(({ id, type, volumeId }) => {
     currentStudyButton = id;
   });
 });
+
+const startLogging = document.getElementById('logEEGandNoiseButton');
+
+
+const deltaCtx = document.getElementById('deltaChart').getContext('2d');
+const thetaCtx = document.getElementById('thetaChart').getContext('2d');
+const alphaCtx = document.getElementById('alphaChart').getContext('2d');
+const betaCtx = document.getElementById('betaChart').getContext('2d');
+const gammaCtx = document.getElementById('gammaChart').getContext('2d');
+
+const deltaChart = new Chart(deltaCtx, createBandChartConfig());
+const thetaChart = new Chart(thetaCtx, createBandChartConfig());
+const alphaChart = new Chart(alphaCtx, createBandChartConfig());
+const betaChart = new Chart(betaCtx, createBandChartConfig());
+const gammaChart = new Chart(gammaCtx, createBandChartConfig());
+
+function createBandChartConfig() {
+  return {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        data: [],
+        borderColor: 'white',
+        borderWidth: 2,
+        tension: 0.3,
+        fill: false
+      }]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      elements: {
+        point:{
+          radius: 0
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          display: false
+        },
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+}
+
+const connectBCIButton = document.getElementById('connectBCIButton');
+const errorToast = document.getElementById('errorToast');
+
+let connected = false;
+
+function updateButtonState(state) {
+  switch (state) {
+    case 'connecting':
+      connectBCIButton.innerText = 'Connecting...';
+      connectBCIButton.disabled = true;
+      connectBCIButton.style.opacity = "0.5";
+      break;
+    case 'connected':
+      connectBCIButton.innerText = 'Disconnect';
+      connectBCIButton.disabled = false;
+      connectBCIButton.style.opacity = "1";
+      connected = true;
+      break;
+    case 'disconnected':
+      connectBCIButton.innerText = 'Connect OpenBCI Board';
+      connectBCIButton.disabled = false;
+      connectBCIButton.style.opacity = "1";
+      connected = false;
+      break;
+    case 'disconnecting':
+      connectBCIButton.innerText = 'Disconnecting...';
+      connectBCIButton.disabled = true;
+      connectBCIButton.style.opacity = "0.5";
+      break;
+  }
+}
+
+window.api.onBciConnectionPreparing(() => {
+  updateButtonState('connecting');
+});
+
+window.api.onBciDisconnectionPreparing(() => {
+  updateButtonState('disconnecting');
+});
+
+window.api.onBciConnectionSuccess(() => {
+  updateButtonState('connected');
+});
+
+window.api.onBciConnectionFailed((errorMessage) => {
+  updateButtonState('disconnected');
+  showErrorToast(errorMessage);
+});
+
+window.api.onBciDisconnected(() => {
+  updateButtonState('disconnected');
+});
+
+window.api.onBciDisconnectionFailed((errorMessage) => {
+  updateButtonState('disconnected');
+  showErrorToast(errorMessage);
+});
+
+connectBCIButton.addEventListener('click', () => {
+  if (connected) {
+    window.api.disconnectFromOpenBciBoard();
+  } else {
+    window.api.connectToOpenBciBoard();
+  }
+});
+
+function showErrorToast(message) {
+  errorToast.innerText = message;
+  errorToast.classList.add('visible');
+  setTimeout(() => {
+    errorToast.classList.remove('visible');
+  }, 5000);
+}
+
+function updateChart(chart, value) {
+  const now = new Date().toLocaleTimeString();
+  chart.data.labels.push(now);
+  chart.data.datasets[0].data.push(value);
+
+  if (chart.data.labels.length > 30) {
+    chart.data.labels.shift();
+    chart.data.datasets[0].data.shift();
+  }
+  chart.update();
+}
+
+window.api.onBandPowers((bandPowers) => {
+  updateChart(deltaChart, bandPowers.delta);
+  updateChart(thetaChart, bandPowers.theta);
+  updateChart(alphaChart, bandPowers.alpha);
+  updateChart(betaChart, bandPowers.beta);
+  updateChart(gammaChart, bandPowers.gamma);
+
+  if (enableLogging) {
+    window.api.logEntry(bandPowers, noiseType, volumeSetting);
+  }
+});
+
+const toggleLogsButton = document.getElementById('toggleLogsButton');
+const logPanel = document.getElementById('logPanel');
+
+toggleLogsButton.addEventListener('click', () => {
+  logPanel.classList.toggle('hidden');
+});
+
+function appendLog(message) {
+  const logContent = document.getElementById('logContent');
+  logContent.textContent += message + '\n';
+
+  const lines = logContent.textContent.split('\n');
+  if (lines.length > 500) {
+    logContent.textContent = lines.slice(-500).join('\n');
+  }
+
+  logPanel.scrollTop = logPanel.scrollHeight;
+}
+
+window.api.onBciLogMessage((message) => {
+  appendLog(message);
+});
+
+const folderButton = document.getElementById('folderButton');
+
+;(async () => {
+  try {
+    const cwd = await window.api.getCurrentDirectory();
+    const display = cwd.split(/[\\/]/).pop() || cwd;
+    folderButton.textContent = `Folder: ${display}`;
+  } catch (err) {
+    console.error('Could not fetch CWD:', err);
+    folderButton.textContent = 'Folder: (unavailable)';
+  }
+})();
+
+folderButton.addEventListener('click', async () => {
+  const selectedPath = await window.api.selectDirectory();
+  if (selectedPath) {
+    const pathParts = selectedPath.split(/[\\/]/);
+    const displayPath = pathParts[pathParts.length - 1];
+    folderButton.textContent = `Folder: ${displayPath}`;
+    window.api.setLogDirectory(selectedPath);
+  }
+});
+
+const logNoisePlayButton = document.getElementById('logNoisePlayButton');
+
+const adaptiveContainer = document.getElementById('adaptiveNoiseContainer');
+const progressContainer = document.getElementById('adaptiveProgressContainer');
+const progressBar       = document.getElementById('adaptiveProgressBar');
+let adaptivePlaying = false;
+
+adaptiveContainer.addEventListener('click', async () => {
+  if (adaptivePlaying) {
+    stopNoise();
+    adaptivePlaying = false;
+    setPlayPauseIcon(
+        document.getElementById('playPauseButtonAdaptiveNoise'),
+        false
+    );
+    return;
+  }
+
+  progressContainer.classList.remove('hidden');
+  progressBar.style.width = '0%';
+
+  const fakeProgress = new Promise(resolve => {
+    let pct = 0;
+    const interval = setInterval(() => {
+      // advance by between 5%–15% each tick
+      pct = Math.min(100, pct + 5 + Math.random()*10);
+      progressBar.style.width = `${pct}%`;
+      if (pct === 100) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 100);
+  });
+
+  const cfgPromise = window.api.getAdaptiveNoiseConfig();
+
+  const [cfg] = await Promise.all([cfgPromise, fakeProgress]);
+
+  progressContainer.classList.add('hidden');
+
+  if (!cfg) {
+    showErrorToast('No adaptive config available');
+    return;
+  }
+
+  const [noiseType, volumeSetting] = cfg.group.split('.');
+  const mapping = {
+    white: { low: 'whiteNoiseLowButton',    middle: 'whiteNoiseMiddleButton',    high: 'whiteNoiseHighButton' },
+    brown: { low: 'rightSkewedNoiseLowButton', middle: 'rightSkewedNoiseMiddleButton', high: 'rightSkewedNoiseHighButton' },
+    pink:  { low: 'leftSkewedNoiseLowButton',  middle: 'leftSkewedNoiseMiddleButton',  high: 'leftSkewedNoiseHighButton' },
+  };
+  const btnId = mapping[noiseType]?.[volumeSetting];
+  if (!btnId) {
+    showErrorToast(`Unknown adaptive group: ${cfg.group}`);
+    return;
+  }
+
+  document.getElementById(btnId).click();
+
+  adaptivePlaying = true;
+  setPlayPauseIcon(
+      document.getElementById('playPauseButtonAdaptiveNoise'),
+      true
+  );
+});
+
+
+startLogging.addEventListener('click', () => {
+  if (enableLogging) {
+    enableLogging = false;
+    logNoisePlayButton.src = "assets/play.svg";
+    window.api.saveLog();
+    return;
+  }
+  logNoisePlayButton.src = "assets/pause.svg";
+  enableLogging = true;
+});
+
 
 // If any defined volume slider is changed and its study button is active, update volume in realtime
 ['lowVolumeSlider', 'middleVolumeSlider', 'highVolumeSlider'].forEach((sliderId, idx) => {
