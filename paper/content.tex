@@ -55,50 +55,51 @@ The main analytical goal is to compare alpha power across all conditions. By exa
 
 \subsection{System Architecture and Technologies}
 
-The development of \textit{NoiseScape} proceeded in parallel with the experimental design. Implemented as a cross-platform desktop application using \texttt{Electron} with a \texttt{Node.js} backend, the system is compatible with macOS and Windows and guides users through the study in a structured and interactive way.
+The development of \textit{NoiseScape} proceeded in parallel with the experimental design. Implemented as a cross-platform desktop application using \texttt{Electron} with a \texttt{Node.js} backend, the system is compatible with macOS and Windows, guiding users through the study in a structured and interactive way.
 
 \begin{itemize}
 \item \textbf{EEG Interface:} Real-time EEG data is streamed from an OpenBCI board via a Python backend using \texttt{openbci-python}, integrated into the application through a Node.js bridge.
 \item \textbf{Noise Engine:} Broadband noise is generated using \texttt{NumPy}, spectrally shaped according to user-defined slider values, and played via the \texttt{sounddevice} library.
-\item \textbf{Data Logging:} EEG recordings, along with the associated condition metadata (e.g., noise type, volume level), are stored in a structured directory system selected by the user.
+\item \textbf{Data Logging:} EEG recordings, along with the associated condition metadata (e.g. noise type and volume level), are stored in a user-selected, structured directory system.
 \end{itemize}
 
 \subsection{Graphical User Interface (GUI)}
 
-The graphical user interface is divided into three vertical columns, a control row spanning the full window width, and a footer section. This layout provides a clearly organized workspace that supports structured experimental procedures. The interface elements are numbered for clarity and to support referencing within figures.
+The graphical user interface is divided into three vertical columns. The interface elements are numbered for clarity and to support referencing within figures.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{interface.png}
-\caption{Graphical user interface of the NoiseScape application.}
-\end{figure}
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{interface.png}
+  \caption{Graphical user interface of the NoiseScape application.}
+  \label{fig:interface}
+\end{figure*}
 
 \begin{enumerate}
 \item \textbf{EEG Bands (Left Column)}
 
-This panel displays real-time EEG power across five frequency bands: Delta ($\delta$), Theta ($\theta$), Alpha ($\alpha$), Beta ($\beta$), and Gamma ($\gamma$). Each band is visually represented within a bordered rectangular box and real-time EEG data is streamed from the connected OpenBCI device. A dedicated button labeled \texttt{Connect OpenBCI Board} initiates the device connection. \\
+This panel displays real-time EEG power across five frequency bands: Delta ($\delta$), Theta ($\theta$), Alpha ($\alpha$), Beta ($\beta$), and Gamma ($\gamma$). Real-time EEG data is streamed from the connected OpenBCI device. A  button \texttt{`Connect OpenBCI Board'} initiates the device connection. \\
 
 \item \textbf{Noise Sound – Free Play Mode (Center Column)}
 
 This section allows manual control of noise spectrum playback through interactive elements:
 
 \begin{enumerate}
-  \item[(2a)] \textbf{Spectral Sliders (20 Hz–20 kHz):} Ten vertically arranged sliders are colored from left to right in rainbow hues (red, orange, yellow, green, turquoise, sky blue, dark blue, dark purple, light purple, pink). Each slider controls a specific frequency band of the white noise generator. When all sliders are centered (default), the full spectrum of white noise is played without weighting.
+  \item[(2a)] \textbf{Spectral Sliders (20 Hz–20 kHz):} Ten vertically arranged sliders are colored from left to right in rainbow hues. Each slider controls a specific frequency band of the white noise generator. When all sliders are centered (default), the full spectrum of white noise is played without weighting.
 
-  \item[(2b)] \textbf{Playback Controls:} Below the sliders is a horizontal white volume slider labeled with values from 1 to 9. To the right of this slider is a play button that toggles the current noise playback. When pressed, the noise corresponding to the current slider configuration is played at the defined volume level. The button icon switches between \texttt{play.svg} and \texttt{pause.svg} depending on the playback state.
+  \item[(2b)] \textbf{Playback Controls:} Below the sliders is a volume slider. To the right of this slider is a play button that toggles the current noise playback. When pressed, the noise corresponding to the current slider configuration is played at the defined volume level.
 
   \item[(2c)] \textbf{Defined Volumes:} Three additional horizontal sliders labeled \textit{Low}, \textit{Middle}, and \textit{High} are positioned below the main playback controls. These sliders allow the user to subjectively define what is perceived as low, medium, or high volume. They do not affect the actual playback volume but are referenced by the predefined study modes in the right column.
 
-  \item[(2d)] \textbf{Adaptive Noise Scape:} Below the defined volume section is a turquoise-colored button labeled \textit{Adaptive Noise Scape}. This button remains inactive until all nine study buttons (Section 3) and the baseline EEG condition (Section 4) have been completed and logged. Once enabled, it plays the noise configuration (as defined by the sliders and volume) that best matches the EEG patterns associated with the currently selected cognitive state (e.g., relaxed). \\
+  \item[(2d)] \textbf{Adaptive Noise Scape:} Below the defined volume section is a button \textit{Adaptive Noise Scape}. This remains inactive until all nine study buttons (Section 3) and the baseline EEG condition (Section 4) have been completed and logged. Once enabled, it plays the noise configuration (as defined by the sliders and volume) that best matches the EEG patterns associated with the currently selected cognitive state (e.g., relaxed). \\
 \end{enumerate}
 
 \item \textbf{Study Mode (Right Column)}
 
-The application supports three main types of spectral profiles, each derived from the same white noise base signal using the ten rainbow-colored sliders:
+The application supports three main types of spectral profiles, each derived from the same white noise base signal using the ten sliders:
 
 \begin{itemize}
 \item \textbf{White Noise:} All sliders are set to the middle position, resulting in a flat and unweighted frequency spectrum.
-\item \textbf{Right-Skewed Noise:} Slider values decrease linearly from left (red) to right (pink), emphasizing low-frequency components.
+\item \textbf{Right-Skewed Noise:} Slider values decrease linearly from left to right , emphasizing low-frequency components.
 \item \textbf{Left-Skewed Noise:} Slider values increase linearly from left to right, emphasizing high-frequency components.
 \end{itemize}
 
@@ -106,19 +107,19 @@ Activating a study button sets the corresponding profile and enables logging of 
 
 \item \textbf{Control Row (Bottom Section)}
 
-This horizontal section spans the full width of the application and includes controls for file path selection, target state selection, and EEG recording.
+The footer includes controls for file path selection, target state selection, and EEG recording.
 
 \begin{itemize}
 \item \textbf{Bottom Left:}
   \begin{itemize}
     \item \texttt{Set Root Path:} Opens a dialog allowing the user to select the root directory in which EEG data and metadata will be stored.
-    \item \texttt{Select State to Achieve:} A dropdown menu labeled \textit{State to Achieve}, currently limited to the value \textit{Relaxed}, allows the user to define the target state for adaptive noise optimization.
+    \item \texttt{Select State to Achieve:} A dropdown menu \textit{State to Achieve}, currently limited to the value \textit{Relaxed}, allows the user to define the target state for adaptive noise optimization.
   \end{itemize}
 
 \item \textbf{Bottom Right:}
   \begin{itemize}
-    \item \texttt{Log EEG + NO Noise (black button):} Starts a 2-minute EEG recording without any noise playback. This button is only active when no sound is currently playing. The resulting EEG data is saved under the label \texttt{baseline}.
-    \item \texttt{Log EEG + Noise (green button):} Starts a 2-minute EEG recording and logs both the EEG signal and the metadata of the currently playing noise condition. This button is only enabled if one of the nine study buttons is active.
+    \item \texttt{Log EEG + NO Noise:} Starts a 2-minute EEG recording without any noise playback. This button is only active when no sound is currently playing. The resulting EEG data is saved under the label \texttt{baseline}.
+    \item \texttt{Log EEG + Noise:} Starts a 2-minute EEG recording and logs both the EEG signal and the metadata of the currently playing noise condition. This button is only enabled if one of the nine study buttons is active.
   \end{itemize}
 \end{itemize}
 
@@ -131,32 +132,37 @@ This horizontal section spans the full width of the application and includes con
 
 \section{Discussion and Future Work}
 
-NoiseScape demonstrates the feasibility of integrating EEG measurement with interactive sound environments in a structured experimental setting. Its modular architecture and intuitive interface make it suitable for both protocol-driven trials and exploratory usage.
+The \textit{NoiseScape} system demonstrates the potential for using neuroadaptive feedback to customise ambient noise environments in real time. Integrating EEG data with dynamic sound synthesis enables nuanced, user-specific modulation of auditory stimuli, offering an alternative to traditional static soundscapes.
 
-A key current limitation is the absence of real-time adaptation. While the system identifies optimal configurations through offline analysis, it does not yet dynamically adjust noise during a session. However, its design readily supports future enhancements such as:
+A central challenge observed during development was finding the right balance between system responsiveness and user stability. Real-time EEG data is inherently noisy and susceptible to artefacts (e.g. muscle movement or eye blinks), which can cause erratic fluctuations in noise modulation. Future iterations of the system could benefit from more robust signal pre-processing, possibly incorporating real-time artefact rejection algorithms or machine learning classifiers trained to detect stable mental states.
 
+Another important for development is \textbf{longitudinal personalization}.  While the current version adapts to momentary brain states, a more intelligent system would learn a user’s patterns over time. By building a historical profile of EEG responses in different contexts (e.g. time of day, task type and emotional state), the system could proactively recommend or generate optimal noise configurations before cognitive fatigue or stress sets in. This could be achieved through online learning algorithms or reinforcement learning frameworks that continuously adjust audio parameters based on long-term reward signals, such as increased productivity or self-reported well-being.
+
+One particularly promising application lies in \textbf{clinical contexts}, such as the treatment of anxiety, ADHD and insomnia. Neuroadaptive sound environments could complement or replace pharmacological interventions, offering an alternative with fewer side effects for cognitive regulation. For example, wearable EEG devices paired with mobile versions of \textbf{NoiseScape} could support daily functioning in children with attention deficit disorders and help patients with generalised anxiety disorder to engage in self-regulation exercises.
+
+Furthermore, \textbf{integration with consumer devices} could drastically increase the system's scalability and accessibility. While these devices offer lower signal fidelity than research-grade EEG systems, this is sufficient for detecting significant changes in mental state. This could enable the continuous, passive adaptation of auditory environments during everyday activities, such as commuting, studying or sleeping.
+
+Future development directions include:
 \begin{itemize}
-\item \textbf{Live EEG Classification}: Incorporating lightweight machine learning models (e.g., SVM, k-NN) to infer mental state in real time.
-\item \textbf{Expanded Mental States}: Supporting additional states such as focused attention (beta activity) or meditative/drowsy states (theta).
-\item \textbf{Multimodal Sensing}: Integrating heart rate variability (HRV), galvanic skin response (GSR), or respiration to improve state detection accuracy.
-\item \textbf{Immersive Environments}: Extending the system to VR headsets or mobile platforms with embedded EEG.
-\item \textbf{Open Dataset}: Publishing anonymized EEG-noise data to foster reproducibility and facilitate benchmarking in auditory neurofeedback research.
+    \item \textbf{Multimodal feedback integration:} Combining EEG with physiological signals such as heart rate variability (HRV), galvanic skin response (GSR) or eye tracking.
+    \item \textbf{Adaptive goal selection:} Supporting different cognitive states such as "focused", "relaxed" or "sleepy" via context-sensitive audio adaptation.
+    \item \textbf{Real-time sonification of brain states:} Representing EEG activity directly through audio as part of biofeedback training.
+    \item \textbf{Immersive VR/AR environments:} Embedding adaptive audio in virtual spaces to enhance presence, focus or therapeutic immersion.
+    \item \textbf{Open data ecosystem:} Creating a shared dataset of EEG and noise condition mappings to encourage interdisciplinary collaboration.
 \end{itemize}
 
-These extensions would enable NoiseScape to evolve from an experimental research tool into a fully adaptive, real-time neurofeedback platform with broad applicability in wellness, cognitive enhancement, and human-computer interaction.
-
-
-
-
-
+Ultimately, the future of neuroadaptive sound systems lies in their ambient, universal integration — becoming a layer of cognitive support embedded in environments such as classrooms, offices, and therapeutic spaces.
 
 
 
 \section{Conclusion}
 
-NoiseScape offers a structured and scalable environment for investigating how different types and configurations of ambient noise influence brain activity. By combining real-time EEG streaming, flexible noise playback, and structured data logging, the system enables empirical discovery of auditory setups that best support mental relaxation.
+The \textbf{NoiseScape} project demonstrates the potential of a new generation of intelligent auditory systems that can respond to the user’s mental state in real time. By leveraging EEG data to adapt the spectral properties and amplitude of broadband noise, the system transitions from being a passive sound generator to an active cognitive co-regulator. This personalised approach addresses the variability in how individuals respond to auditory stimuli and demonstrates the potential of closed-loop audio feedback in areas such as productivity and mental health.
 
-Although the current version is limited to offline analysis, the underlying architecture is designed for future extensions, including real-time neuroadaptive feedback. As such, NoiseScape lays a practical and conceptual foundation for intelligent sound environments tailored to the listener’s neural state.
+Through its modular and extensible software framework, the project successfully combines the fields of neuroscience, audio engineering, and human-computer interaction. It provides a research platform for investigating EEG–sound interactions and lays the groundwork for further research or consumer applications. 
+
+As the field of neurotechnology advances, systems like \textbf{NoiseScape} could become essential components of cognitive environments, optimising attention during work, deepening relaxation during meditation and enhancing therapeutic interventions in clinical settings. By synchronising digital auditory stimuli with brain rhythms, we are opening the door to a future where sound will support us as well as surround us.
+
 
 %\begin{figure}\[h]
 %\centering
