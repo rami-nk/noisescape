@@ -55,6 +55,7 @@ body {
   justify-content: center;
   align-items: center;
   padding-left: 4rem;
+  position: relative;
 }
 
 .bandLabelContainer {
@@ -291,6 +292,8 @@ body {
     padding: 10px;
     border-top: 0.1rem solid var(--fontColor);
     transition: max-height 0.3s ease;
+    scrollbar-color: #444 #232323; /* thumb color, track color for Firefox */
+    scrollbar-width: thin;         /* for Firefox */
 }
 
 #logPanel.hidden {
@@ -315,4 +318,51 @@ body {
 
 .study-running {
     border: 3px solid green;
+}
+
+#logPanel::-webkit-scrollbar {
+    width: 8px;
+    background: #232323;
+}
+
+#logPanel::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+#logPanel::-webkit-scrollbar-track {
+    background: #232323;
+}
+
+.infoIcon {
+  width: 1rem;
+}
+
+.info-box {
+  position: absolute;
+  background: #343434;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+  width: 320px;
+  max-width: 95vw;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  left: 0;
+  top: 0;
+}
+
+.info-box.visible {
+  opacity: 1;
+}
+
+
+
+.hidden {
+  display: none !important;
 }

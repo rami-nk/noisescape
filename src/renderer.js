@@ -602,3 +602,203 @@ verticalSliders.forEach((slider, i) => {
     }
   });
 });
+
+function clampTooltipPosition(x, y, boxWidth, boxHeight) {
+  const minX = 8;
+  const maxX = window.innerWidth - boxWidth - 8;
+  let clampedX = Math.max(minX, Math.min(x, maxX));
+  let clampedY = y;
+  let clamped = false;
+  if (x !== clampedX) clamped = true;
+  // If tooltip would go off bottom, show above cursor
+  if (y + boxHeight > window.innerHeight - 8) {
+    clampedY = y - boxHeight - 24; // 24px above cursor
+    if (clampedY < 8) clampedY = 8;
+    clamped = true;
+  }
+  return { x: clampedX, y: clampedY, clamped };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // EEG Bands
+  const infoIcon = document.getElementById('infoIconEEGBands');
+  const infoBox = document.getElementById('infoBoxEEGBands');
+  if (infoIcon && infoBox) {
+    let mouseMoveHandler = (e) => {
+      const boxWidth = infoBox.offsetWidth;
+      const boxHeight = infoBox.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox.style.left = `${clampedX}px`;
+      infoBox.style.top = `${clampedY}px`;
+      if (clamped) infoBox.classList.add('clamped'); else infoBox.classList.remove('clamped');
+    };
+    infoIcon.addEventListener('mouseenter', (e) => {
+      infoBox.classList.remove('hidden');
+      infoBox.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler);
+    });
+    infoIcon.addEventListener('mouseleave', (e) => {
+      infoBox.classList.remove('visible');
+      infoBox.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler);
+    });
+  }
+
+  // Noise Sound
+  const infoIcon2 = document.getElementById('infoIconNoiseSound');
+  const infoBox2 = document.getElementById('infoBoxNoiseSound');
+  if (infoIcon2 && infoBox2) {
+    let mouseMoveHandler2 = (e) => {
+      const boxWidth = infoBox2.offsetWidth;
+      const boxHeight = infoBox2.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox2.style.left = `${clampedX}px`;
+      infoBox2.style.top = `${clampedY}px`;
+      if (clamped) infoBox2.classList.add('clamped'); else infoBox2.classList.remove('clamped');
+    };
+    infoIcon2.addEventListener('mouseenter', (e) => {
+      infoBox2.classList.remove('hidden');
+      infoBox2.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler2);
+    });
+    infoIcon2.addEventListener('mouseleave', (e) => {
+      infoBox2.classList.remove('visible');
+      infoBox2.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler2);
+    });
+  }
+
+  // Defined Volumes
+  const infoIcon3 = document.getElementById('infoIconDefinedVolumes');
+  const infoBox3 = document.getElementById('infoBoxDefinedVolumes');
+  if (infoIcon3 && infoBox3) {
+    let mouseMoveHandler3 = (e) => {
+      const boxWidth = infoBox3.offsetWidth;
+      const boxHeight = infoBox3.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox3.style.left = `${clampedX}px`;
+      infoBox3.style.top = `${clampedY}px`;
+      if (clamped) infoBox3.classList.add('clamped'); else infoBox3.classList.remove('clamped');
+    };
+    infoIcon3.addEventListener('mouseenter', (e) => {
+      infoBox3.classList.remove('hidden');
+      infoBox3.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler3);
+    });
+    infoIcon3.addEventListener('mouseleave', (e) => {
+      infoBox3.classList.remove('visible');
+      infoBox3.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler3);
+    });
+  }
+
+  // Adaptive Noise
+  const infoIcon4 = document.getElementById('infoIconAdaptiveNoise');
+  const infoBox4 = document.getElementById('infoBoxAdaptiveNoise');
+  if (infoIcon4 && infoBox4) {
+    let mouseMoveHandler4 = (e) => {
+      const boxWidth = infoBox4.offsetWidth;
+      const boxHeight = infoBox4.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox4.style.left = `${clampedX}px`;
+      infoBox4.style.top = `${clampedY}px`;
+      if (clamped) infoBox4.classList.add('clamped'); else infoBox4.classList.remove('clamped');
+    };
+    infoIcon4.addEventListener('mouseenter', (e) => {
+      infoBox4.classList.remove('hidden');
+      infoBox4.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler4);
+    });
+    infoIcon4.addEventListener('mouseleave', (e) => {
+      infoBox4.classList.remove('visible');
+      infoBox4.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler4);
+    });
+  }
+
+  // Study
+  const infoIcon5 = document.getElementById('infoIconStudy');
+  const infoBox5 = document.getElementById('infoBoxStudy');
+  if (infoIcon5 && infoBox5) {
+    let mouseMoveHandler5 = (e) => {
+      const boxWidth = infoBox5.offsetWidth;
+      const boxHeight = infoBox5.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox5.style.left = `${clampedX}px`;
+      infoBox5.style.top = `${clampedY}px`;
+      if (clamped) infoBox5.classList.add('clamped'); else infoBox5.classList.remove('clamped');
+    };
+    infoIcon5.addEventListener('mouseenter', (e) => {
+      infoBox5.classList.remove('hidden');
+      infoBox5.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler5);
+    });
+    infoIcon5.addEventListener('mouseleave', (e) => {
+      infoBox5.classList.remove('visible');
+      infoBox5.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler5);
+    });
+  }
+
+  // Log
+  const infoIcon6 = document.getElementById('infoIconLog');
+  const infoBox6 = document.getElementById('infoBoxLog');
+  if (infoIcon6 && infoBox6) {
+    let mouseMoveHandler6 = (e) => {
+      const boxWidth = infoBox6.offsetWidth;
+      const boxHeight = infoBox6.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox6.style.left = `${clampedX}px`;
+      infoBox6.style.top = `${clampedY}px`;
+      if (clamped) infoBox6.classList.add('clamped'); else infoBox6.classList.remove('clamped');
+    };
+    infoIcon6.addEventListener('mouseenter', (e) => {
+      infoBox6.classList.remove('hidden');
+      infoBox6.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler6);
+    });
+    infoIcon6.addEventListener('mouseleave', (e) => {
+      infoBox6.classList.remove('visible');
+      infoBox6.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler6);
+    });
+  }
+
+  // Folder
+  const infoIcon7 = document.getElementById('infoIconFolder');
+  const infoBox7 = document.getElementById('infoBoxFolder');
+  if (infoIcon7 && infoBox7) {
+    let mouseMoveHandler7 = (e) => {
+      const boxWidth = infoBox7.offsetWidth;
+      const boxHeight = infoBox7.offsetHeight;
+      let x = e.clientX - boxWidth / 2;
+      let y = e.clientY + 18;
+      const { x: clampedX, y: clampedY, clamped } = clampTooltipPosition(x, y, boxWidth, boxHeight);
+      infoBox7.style.left = `${clampedX}px`;
+      infoBox7.style.top = `${clampedY}px`;
+      if (clamped) infoBox7.classList.add('clamped'); else infoBox7.classList.remove('clamped');
+    };
+    infoIcon7.addEventListener('mouseenter', (e) => {
+      infoBox7.classList.remove('hidden');
+      infoBox7.classList.add('visible');
+      document.addEventListener('mousemove', mouseMoveHandler7);
+    });
+    infoIcon7.addEventListener('mouseleave', (e) => {
+      infoBox7.classList.remove('visible');
+      infoBox7.classList.add('hidden');
+      document.removeEventListener('mousemove', mouseMoveHandler7);
+    });
+  }
+});

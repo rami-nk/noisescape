@@ -13,9 +13,15 @@
         <div class="column" id="column1">
             <p class="headline">EEG Bands:</p>
             <div id="allBandsContainer">
+                <div id="infoBoxEEGBands" class="info-box hidden">
+                    Here you can connect to your BCI (Brain-Computer Interface) device and view real-time activity in the five main EEG frequency bands: Delta, Theta, Alpha, Beta, and Gamma.
+                </div>
+                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconEEGBands">
+
                 <div class="button" id="connectBCIButton">
                     Connect OpenBCI Board
                 </div>
+
 
                 <div class="bandLabelContainer">
                     <p id="deltaLabel">Delta (&#x03B4;)</p>
@@ -56,6 +62,15 @@
 
         <div class="column" id="column2">
             <p class="headline">Noise Sound:</p>
+
+                <div id="infoBoxNoiseSound" class="info-box hidden">
+                    Here you can freely explore the frequencies of the white noise sound, adjust the volume and listen to the sound.
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                    <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconNoiseSound">
+                </div>
+
+
                 <div id="verticalSliderContainer">
                     <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ff0000;" min="0" max="100" value="50"></div>
                     <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffa500;" min="0" max="100" value="50"></div>
@@ -81,6 +96,17 @@
 
                 <div id="definedVolumesContainer">
                     <p class="headline">Defined Volumes:</p>
+
+                        
+                    <div id="infoBoxDefinedVolumes" class="info-box hidden">
+                        Here you can adjust the volume of the noise sound to a predefined volume. Set the volume sliders to what YOU 
+                        consider to be a low, middle or high volume. With this you define the volume that is played when you click on the respective button
+                        in the study (right column).
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 1rem;">
+                        <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconDefinedVolumes">
+                    </div>
+
                     <div id="lowVolumeContainer" class="definedVolumeContainer">
                         <p class="definedVolumeLabel">Low:</p>
                         <div class="sliderWrapper">
@@ -104,7 +130,18 @@
                     </div>
                 </div>
 
+
+
                 <div id="adaptiveNoiseContainer">
+
+
+                    <div id="infoBoxAdaptiveNoise" class="info-box hidden">
+                        Once you did the study (i.e. did both loggings: EEG only and EEG + noise (with all available noise and volume combinations)),
+                        the adaptive noise button will be available and pick an interpolation of the noise that proved to be the most effective for your state.
+                    </div>
+                    <div style="margin-right: 1rem;">
+                        <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconAdaptiveNoise">
+                    </div>
                     <p class="headline adaptiveNoiseText">Adpative Noise Scape:</p>
                     <img src="assets/play.svg" id="playPauseButtonAdaptiveNoise" class="playPauseImgInButton" alt="Play/Pause">
                 </div>
@@ -126,6 +163,15 @@
         </div>
         <div class="column" id="column3">
             <p class="headline">Study:</p>
+
+            <div id="infoBoxStudy" class="info-box hidden">
+                Here you can select the noise and volume combination that you want to use for the study.
+                It uses the volume that you set in the middle column (defined volumes).
+                You can see which frequencies are used in the frequency spectrum once you click on the respective button.
+            </div>
+            <div>
+                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconStudy">
+            </div>
 
            <div class="button whiteNoiseButton" id="whiteNoiseLowButton">
                 White Noise | Low
@@ -169,6 +215,18 @@
 
     <div id="row1">
         <div id="leftColumnInRow1">
+
+            <div id="infoBoxFolder" class="info-box hidden">
+                Here you can select the folder where the data that you log will be saved.
+                Note: The first button is merely for picking the folder. The saved data
+                is then only visible from your machines file explorer.
+                This folder is then also used to access your logs to make the adaptive noise work.
+                The second button is for picking the state you want to achieve.
+            </div>
+            <div>
+                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconFolder" >
+            </div>
+
             <div class="button" id="folderButton">
                 Folder: /path/to/folder
             </div>
@@ -177,6 +235,19 @@
             </div>
         </div>
         <div id="rightColumnInRow1">
+            <div id="infoBoxLog" class="info-box hidden">
+                Here you can log the data to enable the adaptive noise.
+                By logging the only the EEG data (without noise) (first button), get yourself in the state you want to achieve and
+                let the logging run for the displayed time.
+                Then, by logging the EEG data (with noise) (second button), pick the noise and volume combination (buttons in the right column)
+                randomly and let the logging run for the displayed time for each button.
+
+            </div>
+            <div>
+                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconLog" >
+            </div>
+
+
             <div class="button" id="logOnlyEEGButton">
                 Log EEG (No Noise)
                 <img src="assets/play.svg" class="playPauseImgInButton" alt="play">
