@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "start:sim": "electron .",
-    "start:cyton": "BOARD_TYPE=cyton electron ."
+    "start:cyton": "BOARD_TYPE=cyton electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
   },
   "repository": {
     "type": "git",
@@ -19,11 +23,45 @@
     "url": "https://github.com/rami-nk/noisescape/issues"
   },
   "homepage": "https://github.com/rami-nk/noisescape#readme",
+  "build": {
+    "appId": "com.noisescape.app",
+    "productName": "NoiseScape",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "static/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "icon": "static/assets/logo.png",
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "icon": "static/assets/logo.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "static/assets/logo.png",
+      "target": [
+        "AppImage"
+      ]
+    }
+  },
   "dependencies": {
     "brainflow": "^5.13.0",
     "chart.js": "^4.5.0"
   },
   "devDependencies": {
-    "electron": "^36.4.0"
+    "electron": "^36.4.0",
+    "electron-builder": "^26.0.12"
   }
 }
