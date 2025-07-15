@@ -106,49 +106,64 @@
 
                 <div id="adaptiveNoiseContainer">
                     <p class="headline adaptiveNoiseText">Adpative Noise Scape:</p>
-                    <img src="assets/play.svg" class="playPauseImgInButton" id="playPauseButtonAdaptiveNoise" alt="Play/Pause">
+                    <img src="assets/play.svg" id="playPauseButtonAdaptiveNoise" class="playPauseImgInButton" alt="Play/Pause">
                 </div>
+
+            <div id="adaptiveProgressContainer" class="hidden" style="
+                 position: relative;
+                 width: 100%;
+                 height: 4px;
+                 background: rgba(255,255,255,0.2);
+                 margin-top: 4px;
+            ">
+                <div id="adaptiveProgressBar" style="
+                   width: 0%;
+                   height: 100%;
+                   background: white;
+                   transition: width 0.1s linear;
+              "></div>
+            </div>
         </div>
         <div class="column" id="column3">
             <p class="headline">Study:</p>
 
            <div class="button whiteNoiseButton" id="whiteNoiseLowButton">
                 White Noise | Low
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="whiteNoiseLowButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button whiteNoiseButton" id="whiteNoiseMiddleButton">
                 White Noise | Middle
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="whiteNoiseMiddleButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button whiteNoiseButton" id="whiteNoiseHighButton">
                 White Noise | High
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="whiteNoiseHighButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseLowButton">
                 Right Skewed Noise | Low
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="rightSkewedNoiseLowButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseMiddleButton">
                 Right Skewed Noise | Middle
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="rightSkewedNoiseMiddleButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseHighButton">
                 Right Skewed Noise | High
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="rightSkewedNoiseHighButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseLowButton">
                 Left Skewed Noise | Low
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="leftSkewedNoiseLowButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseMiddleButton">
                 Left Skewed Noise | Middle
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="leftSkewedNoiseMiddleButtonImg" class="playPauseImgInButton">
             </div>
             <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseHighButton">
                 Left Skewed Noise | High
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="leftSkewedNoiseHighButtonImg" class="playPauseImgInButton">
             </div>
-            
+
         </div>
     </div>
 
@@ -164,11 +179,11 @@
         <div id="rightColumnInRow1">
             <div class="button" id="logOnlyEEGButton">
                 Log EEG (No Noise)
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" class="playPauseImgInButton" alt="play">
             </div>
             <div class="button" id="logEEGandNoiseButton">
                 Log EEG + Noise
-                <img src="assets/play.svg" class="playPauseImgInButton">
+                <img src="assets/play.svg" id="logNoisePlayButton" class="playPauseImgInButton" alt="play">
             </div>
         </div>
     </div>
@@ -185,183 +200,6 @@
     <div id="errorToast" class="toast"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const deltaCtx = document.getElementById('deltaChart').getContext('2d');
-        const thetaCtx = document.getElementById('thetaChart').getContext('2d');
-        const alphaCtx = document.getElementById('alphaChart').getContext('2d');
-        const betaCtx = document.getElementById('betaChart').getContext('2d');
-        const gammaCtx = document.getElementById('gammaChart').getContext('2d');
-
-        const deltaChart = new Chart(deltaCtx, createBandChartConfig());
-        const thetaChart = new Chart(thetaCtx, createBandChartConfig());
-        const alphaChart = new Chart(alphaCtx, createBandChartConfig());
-        const betaChart = new Chart(betaCtx, createBandChartConfig());
-        const gammaChart = new Chart(gammaCtx, createBandChartConfig());
-
-        function createBandChartConfig() {
-            return {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        borderColor: 'white',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: false
-                    }]
-                },
-                options: {
-                    animation: false,
-                    responsive: true,
-                    elements: {
-                        point:{
-                            radius: 0
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            display: false
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
-        }
-
-        const connectBCIButton = document.getElementById('connectBCIButton');
-        const errorToast = document.getElementById('errorToast');
-
-        let connected = false;
-
-        function updateButtonState(state) {
-            switch (state) {
-                case 'connecting':
-                    connectBCIButton.innerText = 'Connecting...';
-                    connectBCIButton.disabled = true;
-                    connectBCIButton.style.opacity = 0.5;
-                    break;
-                case 'connected':
-                    connectBCIButton.innerText = 'Disconnect';
-                    connectBCIButton.disabled = false;
-                    connectBCIButton.style.opacity = 1;
-                    connected = true;
-                    break;
-                case 'disconnected':
-                    connectBCIButton.innerText = 'Connect OpenBCI Board';
-                    connectBCIButton.disabled = false;
-                    connectBCIButton.style.opacity = 1;
-                    connected = false;
-                    break;
-                case 'disconnecting':
-                    connectBCIButton.innerText = 'Disconnecting...';
-                    connectBCIButton.disabled = true;
-                    connectBCIButton.style.opacity = 0.5;
-                    break;
-            }
-        }
-
-        window.api.onBciConnectionPreparing(() => {
-            updateButtonState('connecting');
-        });
-
-        window.api.onBciDisconnectionPreparing(() => {
-            updateButtonState('disconnecting');
-        });
-
-        window.api.onBciConnectionSuccess(() => {
-            updateButtonState('connected');
-        });
-
-        window.api.onBciConnectionFailed((errorMessage) => {
-            updateButtonState('disconnected');
-            showErrorToast(errorMessage);
-        });
-
-        window.api.onBciDisconnected(() => {
-            updateButtonState('disconnected');
-        });
-
-        window.api.onBciDisconnectionFailed((errorMessage) => {
-            updateButtonState('disconnected');
-            showErrorToast(errorMessage);
-        });
-
-        connectBCIButton.addEventListener('click', () => {
-            if (connected) {
-                window.api.disconnectFromOpenBciBoard();
-            } else {
-                window.api.connectToOpenBciBoard();
-            }
-        });
-
-        function showErrorToast(message) {
-            errorToast.innerText = message;
-            errorToast.classList.add('visible');
-            setTimeout(() => {
-                errorToast.classList.remove('visible');
-            }, 5000);
-        }
-
-        function updateChart(chart, value) {
-            const now = new Date().toLocaleTimeString();
-            chart.data.labels.push(now);
-            chart.data.datasets[0].data.push(value);
-
-            if (chart.data.labels.length > 30) {
-                chart.data.labels.shift();
-                chart.data.datasets[0].data.shift();
-            }
-            chart.update();
-        }
-
-        window.api.onBandPowers((bandPowers) => {
-            console.log("Received band powers:", bandPowers);
-            updateChart(deltaChart, bandPowers.delta);
-            updateChart(thetaChart, bandPowers.theta);
-            updateChart(alphaChart, bandPowers.alpha);
-            updateChart(betaChart, bandPowers.beta);
-            updateChart(gammaChart, bandPowers.gamma);
-        });
-
-        const toggleLogsButton = document.getElementById('toggleLogsButton');
-        const logPanel = document.getElementById('logPanel');
-
-        toggleLogsButton.addEventListener('click', () => {
-            logPanel.classList.toggle('hidden');
-            
-            // Update arrow direction based on panel state
-            if (logPanel.classList.contains('hidden')) {
-                toggleLogsButton.textContent = 'Logs ▼';
-            } else {
-                toggleLogsButton.textContent = 'Logs ▲';
-            }
-        });
-
-        function appendLog(message) {
-            const logContent = document.getElementById('logContent');
-            logContent.textContent += message + '\n';
-
-            const lines = logContent.textContent.split('\n');
-            if (lines.length > 500) {
-                logContent.textContent = lines.slice(-500).join('\n');
-            }
-
-            logPanel.scrollTop = logPanel.scrollHeight;
-        }
-
-        window.api.onBciLogMessage((message) => {
-            appendLog(message);
-        });
-    </script>
-
     <script src="../src/sliders.js"></script>
     <script src="../src/renderer.js"></script>
     <script src="../src/logging.js"></script>

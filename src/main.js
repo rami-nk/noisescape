@@ -1,9 +1,12 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, ipcRenderer} = require('electron');
 const path = require('path');
 const {connectToBoard, disconnectFromBoard} = require("./openbci/client");
+const {setLogDirectory, logEntry, storeLogFile} = require("./logger/logger");
+const {findHighestAlphaGroupFromFile} = require("./evaluation/evaluator");
 
 // Store the current working directory and state
-let currentWorkingDir = app.getPath('documents');
+let currentWorkingDir = process.cwd();
+setLogDirectory(currentWorkingDir);
 let currentState = 'Relaxed';
 
 // Register IPC handlers BEFORE app.whenReady()
@@ -38,9 +41,36 @@ ipcMain.on('connect-to-openbci-board', async () => {
   await connectToBoard(win);
 });
 
+ipcMain.on('set-log-directory', (event, dir) => {
+  setLogDirectory(dir);
+});
+
+ipcMain.on('log-entry', (event, entry, noiseType, volumeSetting) => {
+  logEntry(entry, noiseType, volumeSetting);
+});
+
+ipcMain.on('save-log', () => {
+  storeLogFile();
+});
+
+ipcMain.handle('get-adaptive-noise-config', async () => {
+  // assume your data file lives in the currentWorkingDir:
+  const jsonPath = path.join(currentWorkingDir, 'data.json');
+  try {
+    return findHighestAlphaGroupFromFile(jsonPath);
+  } catch (err) {
+    console.error('Adaptive noise config error:', err);
+    return null;
+  }
+});
+
 ipcMain.on('disconnect-from-openbci-board', async () => {
   const win = BrowserWindow.getFocusedWindow();
   await disconnectFromBoard(win);
+});
+
+ipcMain.handle('get-current-directory', () => {
+  return currentWorkingDir;
 });
 
 function createWindow () {

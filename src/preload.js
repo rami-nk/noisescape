@@ -19,7 +19,13 @@ contextBridge.exposeInMainWorld(
         onBciConnectionPreparing: (callback) => ipcRenderer.on('bci-connection-prepare', (_, msg) => callback(msg)),
         onBciDisconnectionPreparing: (callback) => ipcRenderer.on('bci-disconnection-prepare', (_, msg) => callback(msg)),
         onBciLogMessage: (callback) => ipcRenderer.on('bci-log-message', (_, msg) => callback(msg)),
-        onBandPowers: (callback) => ipcRenderer.on('band-powers', (event, data) => callback(data))
+        onBandPowers: (callback) => ipcRenderer.on('band-powers', (event, data) => callback(data)),
+        setLogDirectory: (dir) => ipcRenderer.send('set-log-directory', dir),
+        logEntry: (entry, noiseType, volumeSetting) => ipcRenderer.send('log-entry', entry, noiseType, volumeSetting),
+        getAdaptiveNoiseConfig: () => ipcRenderer.invoke('get-adaptive-noise-config'),
+        getCurrentDirectory: () => ipcRenderer.invoke('get-current-directory'),
+        saveLog: () => ipcRenderer.send('save-log'),
+
     }
 );
 

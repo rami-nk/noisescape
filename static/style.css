@@ -280,6 +280,8 @@ body {
     opacity: 1;
 }
 
+.hidden { display: none; }
+
 #logPanel {
     width: 100%;
     max-height: 200px;
@@ -309,4 +311,8 @@ body {
     background-color: transparent;
     color: var(--fontColor);
     border: none;
+}
+
+.study-running {
+    border: 3px solid green;
 }
