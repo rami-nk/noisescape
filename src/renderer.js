@@ -492,7 +492,7 @@ window.api.onBandPowers((bandPowers) => {
   updateChart(betaChart, bandPowers.beta);
   updateChart(gammaChart, bandPowers.gamma);
 
-  if (enableLogging) {
+  if (enableLogging && noiseType && volumeSetting) {
     window.api.logEntry(bandPowers, noiseType, volumeSetting);
   }
 });
@@ -615,12 +615,54 @@ startLogging.addEventListener('click', () => {
     enableLogging = false;
     logNoisePlayButton.src = "assets/play.svg";
     window.api.saveLog();
+
+    if (noiseType && volumeSetting) {
+      selectedRating = null;
+      stars.forEach(s => s.classList.remove('selected'));
+      ratingModal.classList.remove('hidden');
+    }
+
     return;
   }
   logNoisePlayButton.src = "assets/pause.svg";
   enableLogging = true;
 });
 
+window.api.onDisableLogging(() => {
+  window.api.saveLog();
+  enableLogging = false;
+
+  if (noiseType && volumeSetting) {
+    selectedRating = null;
+    stars.forEach(s => s.classList.remove('selected'));
+    ratingModal.classList.remove('hidden');
+  }
+});
+
+// ################## Rating ########################
+const ratingModal = document.getElementById('ratingModal');
+const stars = document.querySelectorAll('#starRating .star');
+const submitRatingButton = document.getElementById('submitRatingButton');
+
+let selectedRating = null;
+
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    selectedRating = Number(star.getAttribute('data-value'));
+    stars.forEach(s => s.classList.remove('selected'));
+    for (let i = 0; i < selectedRating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+
+submitRatingButton.addEventListener('click', () => {
+  if (selectedRating && noiseType && volumeSetting) {
+    window.api.sendConditionRating(noiseType, volumeSetting, selectedRating);
+  }
+  ratingModal.classList.add('hidden');
+});
+// ######################################################
 
 // If any defined volume slider is changed and its study button is active, update volume in realtime
 ['lowVolumeSlider', 'middleVolumeSlider', 'highVolumeSlider'].forEach((sliderId, idx) => {

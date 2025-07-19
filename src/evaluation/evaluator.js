@@ -62,7 +62,7 @@ function findBestGroupForState(data, stateName) {
 
     for (const color in data) {
         for (const band in data[color]) {
-            const readings = data[color][band];
+            const readings = data[color][band].entries;
             const score = evaluateGroup(readings, stateDef);
             if (score > bestScore) {
                 bestScore = score;

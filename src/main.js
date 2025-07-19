@@ -1,7 +1,7 @@
 const { app, BrowserWindow, dialog, ipcMain, ipcRenderer} = require('electron');
 const path = require('path');
 const {connectToBoard, disconnectFromBoard} = require("./openbci/client");
-const {setLogDirectory, logEntry, storeLogFile} = require("./logger/logger");
+const {setLogDirectory, logEntry, storeLogFile, setRatingForCondition} = require("./logger/logger");
 const {findBestGroupFromFile} = require("./evaluation/evaluator");
 const { SerialPort } = require('serialport');
 
@@ -32,6 +32,11 @@ ipcMain.handle('set-state', (event, state) => {
     return true;
 });
 
+ipcMain.on('set-condition-rating', (event, noiseType, volumeSetting, rating) => {
+  console.log(`Storing rating: ${rating} for ${noiseType}.${volumeSetting}`);
+  setRatingForCondition(noiseType, volumeSetting, rating);
+});
+
 ipcMain.on('connect-to-openbci-board', async (event, config) => {
   const win = BrowserWindow.getFocusedWindow();
   await connectToBoard(win, config);
@@ -48,6 +53,11 @@ ipcMain.on('set-log-directory', (event, dir) => {
 
 ipcMain.on('log-entry', (event, entry, noiseType, volumeSetting) => {
   logEntry(entry, noiseType, volumeSetting);
+});
+
+ipcMain.on('disable-logging', (event) => {
+  const win = BrowserWindow.getFocusedWindow();
+  win.webContents.send('logging-disabled');
 });
 
 ipcMain.on('save-log', () => {

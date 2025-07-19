@@ -5,19 +5,19 @@ const {join} = require("node:path");
 let logDirectory = cwd();
 let logContent = {
     white: {
-        low: [],
-        middle: [],
-        high: []
+        low: { entries: [], rating: null },
+        middle: { entries: [], rating: null },
+        high: { entries: [], rating: null }
     },
     brown: {
-        low: [],
-        middle: [],
-        high: []
+        low: { entries: [], rating: null },
+        middle: { entries: [], rating: null },
+        high: { entries: [], rating: null }
     },
     pink: {
-        low: [],
-        middle: [],
-        high: []
+        low: { entries: [], rating: null },
+        middle: { entries: [], rating: null },
+        high: { entries: [], rating: null }
     }
 };
 
@@ -33,12 +33,17 @@ const getLogDirectory = () => {
     return logDirectory;
 }
 
+const setRatingForCondition = (noiseType, volumeSetting, rating) => {
+    logContent[noiseType][volumeSetting].rating = rating;
+    storeLogFile();
+};
+
 const getSourceOfLogFile = () => {
     return join(logDirectory, getFilename()) ;
 }
 
 const logEntry = (entry, noiseType, volumeSetting) => {
-    logContent[noiseType][volumeSetting].push(entry);
+    logContent[noiseType][volumeSetting].entries.push(entry);
 }
 
 const storeLogFile = () => {
@@ -49,4 +54,4 @@ const storeLogFile = () => {
     });
 }
 
-module.exports = { storeLogFile, logEntry, setLogDirectory, getSourceOfLogFile, getLogDirectory };
+module.exports = { storeLogFile, logEntry, setLogDirectory, getSourceOfLogFile, getLogDirectory, setRatingForCondition };

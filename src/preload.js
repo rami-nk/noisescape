@@ -1,8 +1,5 @@
-// preload.js
 const {contextBridge, ipcRenderer} = require('electron');
 
-// Expose protected methods that allow the renderer process to use
-// the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld(
     'api', {
         // File system operations
@@ -24,6 +21,9 @@ contextBridge.exposeInMainWorld(
         logEntry: (entry, noiseType, volumeSetting) => ipcRenderer.send('log-entry', entry, noiseType, volumeSetting),
         getAdaptiveNoiseConfig: () => ipcRenderer.invoke('get-adaptive-noise-config'),
         getCurrentDirectory: () => ipcRenderer.invoke('get-current-directory'),
+        sendConditionRating: (noiseType, volumeSetting, rating) => ipcRenderer.send('set-condition-rating', noiseType, volumeSetting, rating),
+        onDisableLogging: (callback) => ipcRenderer.on('logging-disabled', callback),
+        notifyLoggingStopped: () => ipcRenderer.send('disable-logging'),
         getSerialPorts: () => ipcRenderer.invoke('get-serial-ports'),
         saveLog: () => ipcRenderer.send('save-log'),
 
