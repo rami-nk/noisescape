@@ -2,15 +2,14 @@ const { app, BrowserWindow, dialog, ipcMain, ipcRenderer} = require('electron');
 const path = require('path');
 const {connectToBoard, disconnectFromBoard} = require("./openbci/client");
 const {setLogDirectory, logEntry, storeLogFile} = require("./logger/logger");
-const {findHighestAlphaGroupFromFile} = require("./evaluation/evaluator");
+const {findBestGroupFromFile} = require("./evaluation/evaluator");
 
-// Store the current working directory and state
+const states = ['Relaxed', 'Focused', "Alert", "Meditative"];
+
 let currentWorkingDir = process.cwd();
 setLogDirectory(currentWorkingDir);
 let currentState = 'Relaxed';
 
-// Register IPC handlers BEFORE app.whenReady()
-// Handle directory selection
 ipcMain.handle('select-directory', async () => {
   const result = await dialog.showOpenDialog({
     properties: ['openDirectory']
@@ -23,17 +22,13 @@ ipcMain.handle('select-directory', async () => {
   return null;
 });
 
-// Handle state management
 ipcMain.handle('get-states', () => {
-  return ['Relaxed']; // For now, only return 'Relaxed' as the available state
+  return states;
 });
 
 ipcMain.handle('set-state', (event, state) => {
-  if (state === 'Relaxed') {
     currentState = state;
     return true;
-  }
-  return false;
 });
 
 ipcMain.on('connect-to-openbci-board', async () => {
@@ -53,11 +48,10 @@ ipcMain.on('save-log', () => {
   storeLogFile();
 });
 
-ipcMain.handle('get-adaptive-noise-config', async () => {
-  // assume your data file lives in the currentWorkingDir:
+ipcMain.handle('get-adaptive-noise-config', async (_) => {
   const jsonPath = path.join(currentWorkingDir, 'data.json');
   try {
-    return findHighestAlphaGroupFromFile(jsonPath);
+    return findBestGroupFromFile(jsonPath, currentState);
   } catch (err) {
     console.error('Adaptive noise config error:', err);
     return null;

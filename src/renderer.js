@@ -1,6 +1,5 @@
 const stateButton = document.getElementById('stateToAchieveButton');
 
-// Handle state selection
 let isDropdownVisible = false;
 const dropdownMenu = document.createElement('div');
 dropdownMenu.style.display = 'none';
@@ -11,8 +10,7 @@ dropdownMenu.style.borderRadius = '5px';
 dropdownMenu.style.padding = '5px';
 dropdownMenu.style.zIndex = '1000';
 
-// Create the dropdown menu items
-const states = ['Relaxed'];
+const states = ['Relaxed', 'Focused', "Alert", "Meditative"];
 states.forEach(state => {
   const item = document.createElement('div');
   item.textContent = state;
@@ -30,6 +28,7 @@ states.forEach(state => {
   
   item.addEventListener('click', async () => {
     const success = await window.api.setState(state);
+    console.log(success);
     if (success) {
       stateButton.textContent = `State To Achieve: ${state} ▼`;
       dropdownMenu.style.display = 'none';
@@ -40,13 +39,10 @@ states.forEach(state => {
   dropdownMenu.appendChild(item);
 });
 
-// Add the dropdown menu to the document
 document.body.appendChild(dropdownMenu);
 
-// Handle state button click
 stateButton.addEventListener('click', () => {
   if (!isDropdownVisible) {
-    // Position the dropdown below the button
     const buttonRect = stateButton.getBoundingClientRect();
     dropdownMenu.style.top = `${buttonRect.bottom + window.scrollY}px`;
     dropdownMenu.style.left = `${buttonRect.left + window.scrollX}px`;
@@ -59,20 +55,17 @@ stateButton.addEventListener('click', () => {
     dropdownMenu.style.fontWeight = 'bold';
     isDropdownVisible = true;
     
-    // Update arrow to point up when dropdown is open
     const currentText = stateButton.textContent.replace(' ▼', '').replace(' ▲', '');
     stateButton.textContent = `${currentText} ▲`;
   } else {
     dropdownMenu.style.display = 'none';
     isDropdownVisible = false;
     
-    // Update arrow to point down when dropdown is closed
     const currentText = stateButton.textContent.replace(' ▼', '').replace(' ▲', '');
     stateButton.textContent = `${currentText} ▼`;
   }
 });
 
-// Close dropdown when clicking outside
 document.addEventListener('click', (event) => {
   if (!stateButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
     dropdownMenu.style.display = 'none';
