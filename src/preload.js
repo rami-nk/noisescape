@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld(
         // State management
         getStates: () => ipcRenderer.invoke('get-states'),
         setState: (state) => ipcRenderer.invoke('set-state', state),
-        connectToOpenBciBoard: () => ipcRenderer.send('connect-to-openbci-board'),
+        connectToOpenBciBoard: (config) => ipcRenderer.send('connect-to-openbci-board', config),
         disconnectFromOpenBciBoard: () => ipcRenderer.send('disconnect-from-openbci-board'),
         onBciConnectionSuccess: (callback) => ipcRenderer.on('bci-connection-success', callback),
         onBciConnectionFailed: (callback) => ipcRenderer.on('bci-connection-failed', (_, msg) => callback(msg)),
@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld(
         logEntry: (entry, noiseType, volumeSetting) => ipcRenderer.send('log-entry', entry, noiseType, volumeSetting),
         getAdaptiveNoiseConfig: () => ipcRenderer.invoke('get-adaptive-noise-config'),
         getCurrentDirectory: () => ipcRenderer.invoke('get-current-directory'),
+        getSerialPorts: () => ipcRenderer.invoke('get-serial-ports'),
         saveLog: () => ipcRenderer.send('save-log'),
 
     }

@@ -19,11 +19,22 @@
                 <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconEEGBands">
 
                 <div class="connectBCIButtonContainer">
-                    <div title="online" id="greenLamp">
+                    <div id="bciConfigOptions">
+                        <select id="boardTypeSelect">
+                            <option value="synthetic">Simulated</option>
+                            <option value="cyton">Cyton Board</option>
+                        </select>
+
+                        <select id="serialPortSelect">
+                            <option disabled selected>Detecting ports...</option>
+                        </select>
                     </div>
 
                     <div class="button" id="connectBCIButton">
                         Connect OpenBCI Board
+                    </div>
+
+                    <div title="online" id="greenLamp">
                     </div>
                 </div>
 

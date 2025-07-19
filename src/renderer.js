@@ -361,13 +361,15 @@ function updateButtonState(state) {
       connectBCIButton.disabled = true;
       connectBCIButton.style.opacity = "0.5";
       greenLamp.style.display = 'none';
+      showBCIOptions(false);
       break;
     case 'connected':
       connectBCIButton.innerText = 'Disconnect';
       connectBCIButton.disabled = false;
       connectBCIButton.style.opacity = "1";
-      connected = true;
       greenLamp.style.display = 'block';
+      connected = true;
+      showBCIOptions(false);
       break;
     case 'disconnected':
       connectBCIButton.innerText = 'Connect OpenBCI Board';
@@ -375,11 +377,13 @@ function updateButtonState(state) {
       connectBCIButton.style.opacity = "1";
       connected = false;
       greenLamp.style.display = 'none';
+      showBCIOptions(true);
       break;
     case 'disconnecting':
       connectBCIButton.innerText = 'Disconnecting...';
       connectBCIButton.disabled = true;
       connectBCIButton.style.opacity = "0.5";
+      showBCIOptions(false);
       break;
   }
 }
@@ -410,13 +414,56 @@ window.api.onBciDisconnectionFailed((errorMessage) => {
   showErrorToast(errorMessage);
 });
 
+const boardTypeSelect = document.getElementById('boardTypeSelect');
+const serialPortSelect = document.getElementById('serialPortSelect');
+const bciConfigOptions = document.getElementById('bciConfigOptions');
+
+function showBCIOptions(show) {
+  bciConfigOptions.style.display = show ? 'flex' : 'none';
+}
+
+boardTypeSelect.addEventListener('change', () => {
+  const isCyton = boardTypeSelect.value === 'cyton';
+  serialPortSelect.style.display = isCyton ? 'inline-block' : 'none';
+
+  if (isCyton) {
+    loadSerialPorts();
+  }
+});
+
 connectBCIButton.addEventListener('click', () => {
   if (connected) {
     window.api.disconnectFromOpenBciBoard();
   } else {
-    window.api.connectToOpenBciBoard();
+    const boardType = boardTypeSelect.value;
+    const serialPort = serialPortSelect.value || null;
+
+    window.api.connectToOpenBciBoard({ boardType, serialPort });
   }
 });
+
+async function loadSerialPorts() {
+  try {
+    const ports = await window.api.getSerialPorts();
+    serialPortSelect.innerHTML = '';
+
+    if (ports.length === 0) {
+      const noOption = document.createElement('option');
+      noOption.textContent = 'No serial ports found';
+      noOption.disabled = true;
+      serialPortSelect.appendChild(noOption);
+    } else {
+      ports.forEach(port => {
+        const option = document.createElement('option');
+        option.value = port;
+        option.textContent = port;
+        serialPortSelect.appendChild(option);
+      });
+    }
+  } catch (err) {
+    console.error("Could not load serial ports:", err);
+  }
+}
 
 function showErrorToast(message) {
   errorToast.innerText = message;
@@ -799,4 +846,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.removeEventListener('mousemove', mouseMoveHandler7);
     });
   }
+
+  loadSerialPorts();
 });

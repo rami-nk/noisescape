@@ -100,6 +100,15 @@ body {
   margin-left: 1rem;
 }
 
+#bciConfigOptions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+select, input {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+}
 
 #column2 {
   border-right: 1px solid var(--fontColor);
@@ -254,6 +263,17 @@ body {
 
 #connectBCIButton {
   background-color: #2a666b;
+  text-wrap: nowrap;
+  margin: 0;
+}
+
+#serialPortSelect {
+    width: 80px;
+    display: none;
+}
+
+#boardTypeSelect {
+    width: 100px;
 }
 
 #greenLamp {
@@ -265,6 +285,7 @@ body {
 
 .connectBCIButtonContainer {
     display: flex;
+    flex-direction: row-reverse;
     gap: 10px;
     align-items: center;
     margin-bottom: 2rem;

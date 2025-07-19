@@ -3,6 +3,7 @@ const path = require('path');
 const {connectToBoard, disconnectFromBoard} = require("./openbci/client");
 const {setLogDirectory, logEntry, storeLogFile} = require("./logger/logger");
 const {findBestGroupFromFile} = require("./evaluation/evaluator");
+const { SerialPort } = require('serialport');
 
 const states = ['Relaxed', 'Focused', "Alert", "Meditative"];
 
@@ -31,9 +32,14 @@ ipcMain.handle('set-state', (event, state) => {
     return true;
 });
 
-ipcMain.on('connect-to-openbci-board', async () => {
+ipcMain.on('connect-to-openbci-board', async (event, config) => {
   const win = BrowserWindow.getFocusedWindow();
-  await connectToBoard(win);
+  await connectToBoard(win, config);
+});
+
+ipcMain.handle('get-serial-ports', async () => {
+  const ports = await SerialPort.list();
+  return ports.map(port => port.path); // e.g., ['/dev/cu.usbserial-123', 'COM3']
 });
 
 ipcMain.on('set-log-directory', (event, dir) => {

@@ -6,9 +6,9 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 let streamInterval = null;
 let board = null;
 
-const connectToBoard = async (mainWindow) => {
+const connectToBoard = async (mainWindow, config) => {
     try {
-        const boardType = process.env.BOARD_TYPE || "synthetic";
+        const boardType = config.boardType || "synthetic";
         let boardId;
         switch (boardType) {
             case "synthetic": {
@@ -17,7 +17,7 @@ const connectToBoard = async (mainWindow) => {
                 break;
             }
             case "cyton": {
-                const serialPort = process.env.SERIAL_PORT || '/dev/cu.usbserial-DN0093R0';
+                const serialPort = config.serialPort || '/dev/cu.usbserial-DN0093R0';
                 boardId = BoardIds.CYTON_BOARD;
                 board = new BoardShim(boardId, { serialPort });
                 break;
