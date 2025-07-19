@@ -21,6 +21,10 @@ let logContent = {
     }
 };
 
+const getFilename = () => {
+    return 'noisescape-experiment.json';
+};
+
 const setLogDirectory = (dir) => {
     logDirectory = dir;
 }
@@ -30,7 +34,7 @@ const getLogDirectory = () => {
 }
 
 const getSourceOfLogFile = () => {
-    return join(logDirectory, 'data.json') ;
+    return join(logDirectory, getFilename()) ;
 }
 
 const logEntry = (entry, noiseType, volumeSetting) => {
@@ -38,7 +42,7 @@ const logEntry = (entry, noiseType, volumeSetting) => {
 }
 
 const storeLogFile = () => {
-    fs.writeFile( getSourceOfLogFile(), JSON.stringify(logContent), err => {
+    fs.writeFile(getSourceOfLogFile(), JSON.stringify(logContent), err => {
         if (err) {
             console.error(err);
         }

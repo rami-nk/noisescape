@@ -55,7 +55,7 @@ ipcMain.on('save-log', () => {
 });
 
 ipcMain.handle('get-adaptive-noise-config', async (_) => {
-  const jsonPath = path.join(currentWorkingDir, 'data.json');
+  const jsonPath = path.join(currentWorkingDir, 'noisescape-experiment.json');
   try {
     return findBestGroupFromFile(jsonPath, currentState);
   } catch (err) {

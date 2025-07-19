@@ -43,7 +43,7 @@ Researchers define what is considered **Low**, **Medium**, and **High** volume f
 
 ## Data Logging Format
 
-Each session logs EEG data by **noise type** and **volume level**, stored in `noisecap-experiment-[YYYY-MM-DD_HH-mm-ss].json` in the over the UI selected output directory.
+Each session logs EEG data by **noise type** and **volume level**, stored in `noisecape-experiment.json` in the over the UI selected output directory.
 
 Example content:
 
