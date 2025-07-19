@@ -11,17 +11,21 @@
 
     <div id="columns">
         <div class="column" id="column1">
-            <p class="headline">EEG Bands:</p>
+            <p class="headline">EEG Bands</p>
             <div id="allBandsContainer">
                 <div id="infoBoxEEGBands" class="info-box hidden">
                     Here you can connect to your BCI (Brain-Computer Interface) device and view real-time activity in the five main EEG frequency bands: Delta, Theta, Alpha, Beta, and Gamma.
                 </div>
                 <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconEEGBands">
 
-                <div class="button" id="connectBCIButton">
-                    Connect OpenBCI Board
-                </div>
+                <div class="connectBCIButtonContainer">
+                    <div title="online" id="greenLamp">
+                    </div>
 
+                    <div class="button" id="connectBCIButton">
+                        Connect OpenBCI Board
+                    </div>
+                </div>
 
                 <div class="bandLabelContainer">
                     <p id="deltaLabel">Delta (&#x03B4;)</p>
@@ -61,7 +65,7 @@
         </div>
 
         <div class="column" id="column2">
-            <p class="headline">Noise Sound:</p>
+            <p class="headline">Noise Sound</p>
 
                 <div id="infoBoxNoiseSound" class="info-box hidden">
                     Here you can freely explore the frequencies of the white noise sound, adjust the volume and listen to the sound.
@@ -72,16 +76,16 @@
 
 
                 <div id="verticalSliderContainer">
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ff0000;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffa500;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffff00;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #008000;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #40e0d0;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #add8e6;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #0000ff;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #800080;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #9370db;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input type="range" class="vertical-slider" style="--thumb-color: #ffc0cb;" min="0" max="100" value="50"></div>
+                    <div class="slider-container first-container"><input title="Sub Bass" type="range" class="vertical-slider" style="--thumb-color: #ff0000;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Low Bass" type="range" class="vertical-slider" style="--thumb-color: #ffa500;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Bass" type="range" class="vertical-slider" style="--thumb-color: #ffff00;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="High Bass" type="range" class="vertical-slider" style="--thumb-color: #008000;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Low Mids" type="range" class="vertical-slider" style="--thumb-color: #40e0d0;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Mids" type="range" class="vertical-slider" style="--thumb-color: #add8e6;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="High Mids" type="range" class="vertical-slider" style="--thumb-color: #0000ff;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Low Treble" type="range" class="vertical-slider" style="--thumb-color: #800080;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Treble" type="range" class="vertical-slider" style="--thumb-color: #9370db;" min="0" max="100" value="50"></div>
+                    <div class="slider-container last-container"><input title="High Treble" type="range" class="vertical-slider" style="--thumb-color: #ffc0cb;" min="0" max="100" value="50"></div>
                 </div>
 
                 <div id="volumeAndPLayRow">
@@ -95,7 +99,7 @@
                 </div>
 
                 <div id="definedVolumesContainer">
-                    <p class="headline">Defined Volumes:</p>
+                    <p class="headline">Defined Volumes</p>
 
                         
                     <div id="infoBoxDefinedVolumes" class="info-box hidden">
@@ -142,7 +146,7 @@
                     <div style="margin-right: 1rem;">
                         <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconAdaptiveNoise">
                     </div>
-                    <p class="headline adaptiveNoiseText">Adpative Noise Scape:</p>
+                    <p class="headline adaptiveNoiseText">Adpative Noise Scape</p>
                     <img src="assets/play.svg" id="playPauseButtonAdaptiveNoise" class="playPauseImgInButton" alt="Play/Pause">
                 </div>
 
@@ -162,7 +166,7 @@
             </div>
         </div>
         <div class="column" id="column3">
-            <p class="headline">Study:</p>
+            <p class="headline">Study</p>
 
             <div id="infoBoxStudy" class="info-box hidden">
                 Here you can select the noise and volume combination that you want to use for the study.

@@ -75,8 +75,8 @@ ipcMain.handle('get-current-directory', () => {
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 850,
+    width: 1300,
+    height: 950,
     icon: path.join(__dirname, '..', 'static', 'assets', 'logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

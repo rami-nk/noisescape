@@ -355,6 +355,8 @@ function createBandChartConfig() {
 }
 
 const connectBCIButton = document.getElementById('connectBCIButton');
+const greenLamp = document.getElementById('greenLamp');
+greenLamp.style.display = 'none';
 const errorToast = document.getElementById('errorToast');
 
 let connected = false;
@@ -365,18 +367,21 @@ function updateButtonState(state) {
       connectBCIButton.innerText = 'Connecting...';
       connectBCIButton.disabled = true;
       connectBCIButton.style.opacity = "0.5";
+      greenLamp.style.display = 'none';
       break;
     case 'connected':
       connectBCIButton.innerText = 'Disconnect';
       connectBCIButton.disabled = false;
       connectBCIButton.style.opacity = "1";
       connected = true;
+      greenLamp.style.display = 'block';
       break;
     case 'disconnected':
       connectBCIButton.innerText = 'Connect OpenBCI Board';
       connectBCIButton.disabled = false;
       connectBCIButton.style.opacity = "1";
       connected = false;
+      greenLamp.style.display = 'none';
       break;
     case 'disconnecting':
       connectBCIButton.innerText = 'Disconnecting...';

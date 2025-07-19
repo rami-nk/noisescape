@@ -3,8 +3,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: transparent; /* Add this line to set a background color */
+  background-color: transparent;
   margin-top: 3rem;
+  padding: 10px;
+  border: 2px solid gray;
+  border-radius: 10px;
 }
 
 .slider-container {
@@ -12,6 +15,14 @@
   height: 200px;
   position: relative;
   margin: 0 0.8vw;
+}
+
+.first-container {
+  margin-left: 1.8vw;
+}
+
+.last-container {
+  margin-right: 0;
 }
 
 .vertical-slider {
@@ -178,7 +189,7 @@
 }
 
 .headline {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     color: white;
     margin-bottom: 10px;
