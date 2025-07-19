@@ -28,6 +28,15 @@ body {
   overflow-x: hidden;
 }
 
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 10px;
+    width: 100%;
+}
+
 /* Layout Containers */
 #columns {
   display: flex;
@@ -36,16 +45,14 @@ body {
   width: 100%;
   height: 100%;
   margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .column {
   flex: 1;
   min-height: 100%;
-}
-
-/* Specific column background colors */
-#column1 {
-  border-right: 1px solid var(--fontColor);
+  background: #2C2C2C;
+  border-radius: 20px;
 }
 
 #allBandsContainer {
@@ -78,6 +85,7 @@ body {
     margin: 0.5rem 0;
     border: 1px solid white;
     border-radius: 15px;
+    background: #1F2937;
 }
 
 .bandContainerWrapper canvas {
@@ -105,13 +113,13 @@ body {
     gap: 0.5rem;
     align-items: center;
 }
+
 select, input {
     padding: 0.3rem 0.5rem;
     font-size: 0.8rem;
 }
 
 #column2 {
-  border-right: 1px solid var(--fontColor);
   padding: 0 10px 10px;
 }
 
@@ -123,29 +131,35 @@ select, input {
 }
 
 .headline {
-    margin-bottom: 1rem;
     text-align: center;
     font-weight: bold;
+    color: #E0E0E0;
+}
+
+.study-button-container {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
 }
 
 .button {
-    border: 0.1rem solid var(--fontColor);
-    border-radius: 10000rem;
-    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
     text-align: center;
-    font-weight: bold;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    color: #E0E0E0;
+    justify-content: space-between;
     align-items: center;
     margin: 0.5rem 0;
     cursor: pointer;
-    height: 2rem;
-    font-size: 0.8rem;
+    height: 2.5rem;
+    font-size: 14px;
 }
 
 .playPauseImgInButton {
-    padding: 0;
-    margin: 0 0 0 1rem;
     width: 1.3rem;
 }
 
@@ -165,30 +179,18 @@ select, input {
   width: 2rem !important;
 }
 
-
-
-
 #footer {
-  width: 100%;
-  height: 3%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  padding-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-weight: bold;
 }
 
 .logo {
-    border-radius: 100%;
-    width: 1.2rem;
+    width: 2rem;
+    height: 2rem;
     margin: 0 1rem 0 0;
 }
-
-
-
-
-
-
 
 #row1 {
   width: 100%;
@@ -199,17 +201,12 @@ select, input {
   justify-content: center;
 }
 
-
-
-
 #leftColumnInRow1 {
   width: 50%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: end;
   align-items: start;
-  padding-left: 3rem;
 }
 
 #rightColumnInRow1 {
@@ -219,38 +216,59 @@ select, input {
   flex-direction: column;
   justify-content: end;
   align-items: end;
-  padding-right: 3rem;
+}
+
+.log-container {
+    background: #2C2C2C;
+    border-radius: 20px;
+    width: 65%;
+    padding: 15px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#folderButton {
+    background: #374151;
+    width: fit-content;
+}
+
+#column1 {
+    padding-bottom: 10px;
 }
 
 #logOnlyEEGButton{
-    background-color: #1b1b1b;
+    background-color: #4F4F4F;
 }
 
 #logEEGandNoiseButton {
-    background-color: #3a8c53;
+    background-color: #4CAF4F;
 }
-
-
-
-
 
 #playPauseButtonFreePlay {
   cursor: pointer;
   margin-left: 3rem;
 }
 
-
-
 .adaptiveNoiseText {
-  color: turquoise !important;
+  color: cornflowerblue !important;
 }
 
 #playPauseButtonAdaptiveNoise {
-  border: 2px solid turquoise;
+  border: 2px solid cornflowerblue;
   padding: 5px;
   border-radius: 100%;
   cursor: pointer;
   width: 2.5rem;
+  margin-right: 10px;
+}
+
+.adaptiveNoiseTextContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
 }
 
 #adaptiveNoiseContainer {
@@ -258,13 +276,17 @@ select, input {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 #connectBCIButton {
-  background-color: #2a666b;
-  text-wrap: nowrap;
-  margin: 0;
+    background-color: #4CAF4F;
+    text-wrap: nowrap;
+    margin: 0;
+    color: white;
+    display: flex;
+    height: 50px;
+    gap: 10px;
 }
 
 #serialPortSelect {
@@ -274,6 +296,40 @@ select, input {
 
 #boardTypeSelect {
     width: 100px;
+}
+
+.state-select-container {
+    align-self: baseline;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.select {
+    background-color: #374151;
+    color: white;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 6px 18px 6px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='10' viewBox='0 0 20 20' width='10' xmlns='http://www.w3.org/2000/svg'><polygon points='0,0 20,0 10,10'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    background-size: 10px;
+}
+
+.folder-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
 }
 
 #greenLamp {
@@ -320,12 +376,11 @@ select, input {
     max-height: 200px;
     background: #232323;
     color: #fff;
-    overflow-y: auto;
     padding: 10px;
     border-top: 0.1rem solid var(--fontColor);
     transition: max-height 0.3s ease;
-    scrollbar-color: #444 #232323; /* thumb color, track color for Firefox */
-    scrollbar-width: thin;         /* for Firefox */
+    scrollbar-color: #444 #232323;
+    scrollbar-width: thin;
 }
 
 #logPanel.hidden {
@@ -367,7 +422,7 @@ select, input {
 }
 
 .infoIcon {
-  width: 1rem;
+  width: 1.5rem;
 }
 
 .info-box {

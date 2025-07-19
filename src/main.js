@@ -85,7 +85,7 @@ ipcMain.handle('get-current-directory', () => {
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 1300,
+    width: 1500,
     height: 950,
     icon: path.join(__dirname, '..', 'static', 'assets', 'logo.png'),
     webPreferences: {

@@ -1,75 +1,12 @@
-const stateButton = document.getElementById('stateToAchieveButton');
+const stateSelect = document.getElementById('stateToAchieveSelect');
 
-let isDropdownVisible = false;
-const dropdownMenu = document.createElement('div');
-dropdownMenu.style.display = 'none';
-dropdownMenu.style.position = 'absolute';
-dropdownMenu.style.backgroundColor = 'var(--bg)';
-dropdownMenu.style.border = '1px solid var(--fontColor)';
-dropdownMenu.style.borderRadius = '5px';
-dropdownMenu.style.padding = '5px';
-dropdownMenu.style.zIndex = '1000';
-
-const states = ['Relaxed', 'Focused', "Alert", "Meditative"];
-states.forEach(state => {
-  const item = document.createElement('div');
-  item.textContent = state;
-  item.style.padding = '5px 10px';
-  item.style.cursor = 'pointer';
-  item.style.color = 'var(--fontColor)';
-  
-  item.addEventListener('mouseover', () => {
-    item.style.backgroundColor = '#333';
-  });
-  
-  item.addEventListener('mouseout', () => {
-    item.style.backgroundColor = 'transparent';
-  });
-  
-  item.addEventListener('click', async () => {
-    const success = await window.api.setState(state);
-    console.log(success);
-    if (success) {
-      stateButton.textContent = `State To Achieve: ${state} ▼`;
-      dropdownMenu.style.display = 'none';
-      isDropdownVisible = false;
-    }
-  });
-  
-  dropdownMenu.appendChild(item);
-});
-
-document.body.appendChild(dropdownMenu);
-
-stateButton.addEventListener('click', () => {
-  if (!isDropdownVisible) {
-    const buttonRect = stateButton.getBoundingClientRect();
-    dropdownMenu.style.top = `${buttonRect.bottom + window.scrollY}px`;
-    dropdownMenu.style.left = `${buttonRect.left + window.scrollX}px`;
-    dropdownMenu.style.display = 'block';
-    dropdownMenu.style.border = '0.1rem solid var(--fontColor)';
-    dropdownMenu.style.borderTop = 'none';
-    dropdownMenu.style.borderRight = 'none';
-    dropdownMenu.style.borderRadius = '10px';
-    dropdownMenu.style.fontSize = '0.7rem';
-    dropdownMenu.style.fontWeight = 'bold';
-    isDropdownVisible = true;
-    
-    const currentText = stateButton.textContent.replace(' ▼', '').replace(' ▲', '');
-    stateButton.textContent = `${currentText} ▲`;
+stateSelect.addEventListener('change', async (event) => {
+  const selectedState = event.target.value;
+  const success = await window.api.setState(selectedState);
+  if (success) {
+    console.log(`State set to ${selectedState}`);
   } else {
-    dropdownMenu.style.display = 'none';
-    isDropdownVisible = false;
-    
-    const currentText = stateButton.textContent.replace(' ▼', '').replace(' ▲', '');
-    stateButton.textContent = `${currentText} ▼`;
-  }
-});
-
-document.addEventListener('click', (event) => {
-  if (!stateButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-    dropdownMenu.style.display = 'none';
-    isDropdownVisible = false;
+    console.error("Failed to set state");
   }
 });
 
@@ -131,11 +68,11 @@ function setStudyButtonActive(btnElem, active) {
   if (active) {
     btnElem.style.borderWidth = '0.2rem';
     btnElem.style.borderColor = 'white';
-    btnElem.style.boxShadow = '0 0 8px 2px white';
+    btnElem.style.border = '2px solid white';
   } else {
     btnElem.style.borderWidth = '';
     btnElem.style.borderColor = '';
-    btnElem.style.boxShadow = '';
+    btnElem.style.border = '';
   }
   // Set play/pause icon
   const img = btnElem.querySelector('.playPauseImgInButton');
@@ -367,6 +304,7 @@ function updateButtonState(state) {
       connectBCIButton.innerText = 'Disconnect';
       connectBCIButton.disabled = false;
       connectBCIButton.style.opacity = "1";
+      connectBCIButton.style.backgroundColor = "#EF4444";
       greenLamp.style.display = 'block';
       connected = true;
       showBCIOptions(false);
@@ -375,6 +313,7 @@ function updateButtonState(state) {
       connectBCIButton.innerText = 'Connect OpenBCI Board';
       connectBCIButton.disabled = false;
       connectBCIButton.style.opacity = "1";
+      connectBCIButton.style.backgroundColor = "#4CAF4F";
       connected = false;
       greenLamp.style.display = 'none';
       showBCIOptions(true);
@@ -497,11 +436,20 @@ window.api.onBandPowers((bandPowers) => {
   }
 });
 
-const toggleLogsButton = document.getElementById('toggleLogsButton');
 const logPanel = document.getElementById('logPanel');
+const toggleLogsButton = document.getElementById('toggleLogsButton');
 
 toggleLogsButton.addEventListener('click', () => {
+  const wasHidden = logPanel.classList.contains('hidden');
   logPanel.classList.toggle('hidden');
+
+  setTimeout(() => {
+    if (wasHidden) {
+      logPanel.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, 100);
 });
 
 function appendLog(message) {
@@ -521,15 +469,16 @@ window.api.onBciLogMessage((message) => {
 });
 
 const folderButton = document.getElementById('folderButton');
+const folderButtonText = document.getElementById('folderButtonText');
 
 ;(async () => {
   try {
     const cwd = await window.api.getCurrentDirectory();
     const display = cwd.split(/[\\/]/).pop() || cwd;
-    folderButton.textContent = `Folder: ${display}`;
+    folderButtonText.textContent = `Folder: ${display}`;
   } catch (err) {
     console.error('Could not fetch CWD:', err);
-    folderButton.textContent = 'Folder: (unavailable)';
+    folderButtonText.textContent = 'Folder: (unavailable)';
   }
 })();
 
@@ -538,7 +487,7 @@ folderButton.addEventListener('click', async () => {
   if (selectedPath) {
     const pathParts = selectedPath.split(/[\\/]/);
     const displayPath = pathParts[pathParts.length - 1];
-    folderButton.textContent = `Folder: ${displayPath}`;
+    folderButtonText.textContent = `Folder: ${displayPath}`;
     window.api.setLogDirectory(selectedPath);
   }
 });

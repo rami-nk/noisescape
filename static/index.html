@@ -24,27 +24,35 @@
 
     <div id="columns">
         <div class="column" id="column1">
-            <p class="headline">EEG Bands</p>
-            <div id="allBandsContainer">
-                <div id="infoBoxEEGBands" class="info-box hidden">
-                    Here you can connect to your BCI (Brain-Computer Interface) device and view real-time activity in the five main EEG frequency bands: Delta, Theta, Alpha, Beta, and Gamma.
-                </div>
-                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconEEGBands">
+            <div class="header">
+                <p class="headline">EEG Bands</p>
 
+                <div>
+                    <div id="infoBoxEEGBands" class="info-box hidden">
+                        Here you can connect to your BCI (Brain-Computer Interface) device and view real-time activity in the five main EEG frequency bands: Delta, Theta, Alpha, Beta, and Gamma.
+                    </div>
+                    <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconEEGBands">
+                </div>
+            </div>
+
+            <div id="allBandsContainer">
                 <div class="connectBCIButtonContainer">
                     <div id="bciConfigOptions">
-                        <select id="boardTypeSelect">
+                        <select id="boardTypeSelect" class="select">
                             <option value="synthetic">Simulated</option>
                             <option value="cyton">Cyton Board</option>
                         </select>
 
-                        <select id="serialPortSelect">
+                        <select id="serialPortSelect" class="select">
                             <option disabled selected>Detecting ports...</option>
                         </select>
                     </div>
 
                     <div class="button" id="connectBCIButton">
-                        Connect OpenBCI Board
+                        <img style="height: 22px;" src="assets/signal.png" alt="Signal" class="signalIcon" id="signalIcon"/>
+                        <div>
+                            Connect OpenBCI Board
+                        </div>
                     </div>
 
                     <div title="online" id="greenLamp">
@@ -89,30 +97,33 @@
         </div>
 
         <div class="column" id="column2">
-            <p class="headline">Noise Sound</p>
+
+            <div class="header">
+                <p class="headline">Noise Sound</p>
 
                 <div id="infoBoxNoiseSound" class="info-box hidden">
                     Here you can freely explore the frequencies of the white noise sound, adjust the volume and listen to the sound.
                 </div>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                <div style="display: flex; justify-content: center; align-items: center;">
                     <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconNoiseSound">
                 </div>
-
+            </div>
 
                 <div id="verticalSliderContainer">
-                    <div class="slider-container first-container"><input title="Sub Bass" type="range" class="vertical-slider" style="--thumb-color: #ff0000;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input title="Low Bass" type="range" class="vertical-slider" style="--thumb-color: #ffa500;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input title="Bass" type="range" class="vertical-slider" style="--thumb-color: #ffff00;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input title="High Bass" type="range" class="vertical-slider" style="--thumb-color: #008000;" min="0" max="100" value="50"></div>
+                    <div class="slider-container first-container"><input title="Sub Bass" type="range" class="vertical-slider" style="--thumb-color: #EF4444;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Low Bass" type="range" class="vertical-slider" style="--thumb-color: #F59E0B;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Bass" type="range" class="vertical-slider" style="--thumb-color: #ffff93;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="High Bass" type="range" class="vertical-slider" style="--thumb-color: #11B981;" min="0" max="100" value="50"></div>
                     <div class="slider-container"><input title="Low Mids" type="range" class="vertical-slider" style="--thumb-color: #40e0d0;" min="0" max="100" value="50"></div>
                     <div class="slider-container"><input title="Mids" type="range" class="vertical-slider" style="--thumb-color: #add8e6;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input title="High Mids" type="range" class="vertical-slider" style="--thumb-color: #0000ff;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input title="Low Treble" type="range" class="vertical-slider" style="--thumb-color: #800080;" min="0" max="100" value="50"></div>
-                    <div class="slider-container"><input title="Treble" type="range" class="vertical-slider" style="--thumb-color: #9370db;" min="0" max="100" value="50"></div>
-                    <div class="slider-container last-container"><input title="High Treble" type="range" class="vertical-slider" style="--thumb-color: #ffc0cb;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="High Mids" type="range" class="vertical-slider" style="--thumb-color: #3B81F6;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Low Treble" type="range" class="vertical-slider" style="--thumb-color: #6366F1;" min="0" max="100" value="50"></div>
+                    <div class="slider-container"><input title="Treble" type="range" class="vertical-slider" style="--thumb-color: #8B5CF6;" min="0" max="100" value="50"></div>
+                    <div class="slider-container last-container"><input title="High Treble" type="range" class="vertical-slider" style="--thumb-color: #EC4899;" min="0" max="100" value="50"></div>
                 </div>
 
                 <div id="volumeAndPLayRow">
+                    <img style="width: 30px;" src="assets/volume-up.png" class="volumeUp" alt="Volume up">
                     <div class="volumeContainer" id="mainVolume">
                         <div class="sliderWrapper">
                             <input type="range" id="volumeSlider" min="1" max="9" value="5">
@@ -123,16 +134,18 @@
                 </div>
 
                 <div id="definedVolumesContainer">
-                    <p class="headline">Defined Volumes</p>
+                    <div class="header">
+                        <p class="headline">Defined Volumes</p>
 
-                        
-                    <div id="infoBoxDefinedVolumes" class="info-box hidden">
-                        Here you can adjust the volume of the noise sound to a predefined volume. Set the volume sliders to what YOU 
-                        consider to be a low, middle or high volume. With this you define the volume that is played when you click on the respective button
-                        in the study (right column).
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 1rem;">
-                        <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconDefinedVolumes">
+
+                        <div id="infoBoxDefinedVolumes" class="info-box hidden">
+                            Here you can adjust the volume of the noise sound to a predefined volume. Set the volume sliders to what YOU
+                            consider to be a low, middle or high volume. With this you define the volume that is played when you click on the respective button
+                            in the study (right column).
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                            <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconDefinedVolumes">
+                        </div>
                     </div>
 
                     <div id="lowVolumeContainer" class="definedVolumeContainer">
@@ -158,19 +171,18 @@
                     </div>
                 </div>
 
-
-
                 <div id="adaptiveNoiseContainer">
-
-
-                    <div id="infoBoxAdaptiveNoise" class="info-box hidden">
-                        Once you did the study (i.e. did both loggings: EEG only and EEG + noise (with all available noise and volume combinations)),
-                        the adaptive noise button will be available and pick an interpolation of the noise that proved to be the most effective for your state.
+                    <div class="adaptiveNoiseTextContainer">
+                        <div id="infoBoxAdaptiveNoise" class="info-box hidden">
+                            Once you did the study (i.e. did both loggings: EEG only and EEG + noise (with all available noise and volume combinations)),
+                            the adaptive noise button will be available and pick an interpolation of the noise that proved to be the most effective for your state.
+                        </div>
+                        <div style="margin-right: 1rem; display: flex;">
+                            <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconAdaptiveNoise">
+                        </div>
+                        <p class="headline adaptiveNoiseText">Adpative Noise Scape</p>
                     </div>
-                    <div style="margin-right: 1rem;">
-                        <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconAdaptiveNoise">
-                    </div>
-                    <p class="headline adaptiveNoiseText">Adpative Noise Scape</p>
+
                     <img src="assets/play.svg" id="playPauseButtonAdaptiveNoise" class="playPauseImgInButton" alt="Play/Pause">
                 </div>
 
@@ -190,52 +202,74 @@
             </div>
         </div>
         <div class="column" id="column3">
-            <p class="headline">Study</p>
+            <div class="header">
+                <p class="headline">Study</p>
 
-            <div id="infoBoxStudy" class="info-box hidden">
-                Here you can select the noise and volume combination that you want to use for the study.
-                It uses the volume that you set in the middle column (defined volumes).
-                You can see which frequencies are used in the frequency spectrum once you click on the respective button.
-            </div>
-            <div>
-                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconStudy">
+                <div id="infoBoxStudy" class="info-box hidden">
+                    Here you can select the noise and volume combination that you want to use for the study.
+                    It uses the volume that you set in the middle column (defined volumes).
+                    You can see which frequencies are used in the frequency spectrum once you click on the respective button.
+                </div>
+                <div>
+                    <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconStudy">
+                </div>
             </div>
 
-           <div class="button whiteNoiseButton" id="whiteNoiseLowButton">
-                White Noise | Low
-                <img src="assets/play.svg" id="whiteNoiseLowButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button whiteNoiseButton" id="whiteNoiseMiddleButton">
-                White Noise | Middle
-                <img src="assets/play.svg" id="whiteNoiseMiddleButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button whiteNoiseButton" id="whiteNoiseHighButton">
-                White Noise | High
-                <img src="assets/play.svg" id="whiteNoiseHighButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseLowButton">
-                Right Skewed Noise | Low
-                <img src="assets/play.svg" id="rightSkewedNoiseLowButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseMiddleButton">
-                Right Skewed Noise | Middle
-                <img src="assets/play.svg" id="rightSkewedNoiseMiddleButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseHighButton">
-                Right Skewed Noise | High
-                <img src="assets/play.svg" id="rightSkewedNoiseHighButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseLowButton">
-                Left Skewed Noise | Low
-                <img src="assets/play.svg" id="leftSkewedNoiseLowButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseMiddleButton">
-                Left Skewed Noise | Middle
-                <img src="assets/play.svg" id="leftSkewedNoiseMiddleButtonImg" class="playPauseImgInButton">
-            </div>
-            <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseHighButton">
-                Left Skewed Noise | High
-                <img src="assets/play.svg" id="leftSkewedNoiseHighButtonImg" class="playPauseImgInButton">
+            <div class="study-button-container">
+                <div class="button whiteNoiseButton" id="whiteNoiseLowButton">
+                    <div>
+                        White Noise | Low
+                    </div>
+                    <img src="assets/play.svg" id="whiteNoiseLowButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button whiteNoiseButton" id="whiteNoiseMiddleButton">
+                    <div>
+                        White Noise | Middle
+                    </div>
+                    <img src="assets/play.svg" id="whiteNoiseMiddleButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button whiteNoiseButton" id="whiteNoiseHighButton">
+                    <div>
+                        White Noise | High
+                    </div>
+                    <img src="assets/play.svg" id="whiteNoiseHighButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseLowButton">
+                    <div>
+                        Right Skewed Noise | Low
+                    </div>
+                    <img src="assets/play.svg" id="rightSkewedNoiseLowButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseMiddleButton">
+                    <div>
+                        Right Skewed Noise | Middle
+                    </div>
+                    <img src="assets/play.svg" id="rightSkewedNoiseMiddleButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button rightSkewedNoiseButton" id="rightSkewedNoiseHighButton">
+                    <div>
+                        Right Skewed Noise | High
+                    </div>
+                    <img src="assets/play.svg" id="rightSkewedNoiseHighButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseLowButton">
+                    <div>
+                        Left Skewed Noise | Low
+                    </div>
+                    <img src="assets/play.svg" id="leftSkewedNoiseLowButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseMiddleButton">
+                    <div>
+                        Left Skewed Noise | Middle
+                    </div>
+                    <img src="assets/play.svg" id="leftSkewedNoiseMiddleButtonImg" class="playPauseImgInButton">
+                </div>
+                <div class="button leftSkewedNoiseButton" id="leftSkewedNoiseHighButton">
+                    <div>
+                        Left Skewed Noise | High
+                    </div>
+                    <img src="assets/play.svg" id="leftSkewedNoiseHighButtonImg" class="playPauseImgInButton">
+                </div>
             </div>
 
         </div>
@@ -243,53 +277,77 @@
 
     <div id="row1">
         <div id="leftColumnInRow1">
+            <div class="log-container">
 
-            <div id="infoBoxFolder" class="info-box hidden">
-                Here you can select the folder where the data that you log will be saved.
-                Note: The first button is merely for picking the folder. The saved data
-                is then only visible from your machines file explorer.
-                This folder is then also used to access your logs to make the adaptive noise work.
-                The second button is for picking the state you want to achieve.
-            </div>
-            <div>
-                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconFolder" >
-            </div>
+                <div style="display: flex; gap: 10px; align-items: center; width: 100%;">
+                    <div>
+                        <div id="infoBoxFolder" class="info-box hidden">
+                            Here you can select the folder where the data that you log will be saved.
+                            Note: The first button is merely for picking the folder. The saved data
+                            is then only visible from your machines file explorer.
+                            This folder is then also used to access your logs to make the adaptive noise work.
+                            The second button is for picking the state you want to achieve.
+                        </div>
+                        <div>
+                            <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconFolder" >
+                        </div>
+                    </div>
 
-            <div class="button" id="folderButton">
-                Folder: /path/to/folder
-            </div>
-            <div class="button" id="stateToAchieveButton">
-                State To Achieve: Relaxed ▼
+                    <div class="button folder-container" id="folderButton">
+                        <img style="width: 22px;" src="assets/folder.png" alt="folder"/>
+
+                        <div id="folderButtonText">
+                            Folder: /path/to/folder
+                        </div>
+                    </div>
+                </div>
+
+                <div class="state-select-container">
+                    <label for="stateToAchieveSelect">Target State</label>
+                    <select class="select" id="stateToAchieveSelect">
+                        <option value="Relaxed">Relaxed</option>
+                        <option value="Focused">Focused</option>
+                        <option value="Alert">Alert</option>
+                        <option value="Meditative">Meditative</option>
+                    </select>
+                </div>
             </div>
         </div>
+
+        <div id="footer">
+            <div style="display: flex; align-items: center;">
+                <img src="assets/logo.png" alt="Logo" class="logo">
+                <p>NoiseScape&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                <button id="toggleLogsButton" style="text-wrap: nowrap;">Logs ▼</button>
+            </div>
+        </div>
+
         <div id="rightColumnInRow1">
-            <div id="infoBoxLog" class="info-box hidden">
-                Here you can log the data to enable the adaptive noise.
-                By logging the only the EEG data (without noise) (first button), get yourself in the state you want to achieve and
-                let the logging run for the displayed time.
-                Then, by logging the EEG data (with noise) (second button), pick the noise and volume combination (buttons in the right column)
-                randomly and let the logging run for the displayed time for each button.
+            <div class="log-container">
+                <div style="align-self: start; margin-left: 4px;">
+                    <div id="infoBoxLog" class="info-box hidden">
+                        Here you can log the data to enable the adaptive noise.
+                        By logging the only the EEG data (without noise) (first button), get yourself in the state you want to achieve and
+                        let the logging run for the displayed time.
+                        Then, by logging the EEG data (with noise) (second button), pick the noise and volume combination (buttons in the right column)
+                        randomly and let the logging run for the displayed time for each button.
 
-            </div>
-            <div>
-                <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconLog" >
-            </div>
+                    </div>
+                    <div>
+                        <img src="assets/info.svg" alt="Info" class="infoIcon" id="infoIconLog" >
+                    </div>
+                </div>
 
-
-            <div class="button" id="logOnlyEEGButton">
-                Log EEG (No Noise)
-                <img src="assets/play.svg" class="playPauseImgInButton" alt="play">
-            </div>
-            <div class="button" id="logEEGandNoiseButton">
-                Log EEG + Noise
-                <img src="assets/play.svg" id="logNoisePlayButton" class="playPauseImgInButton" alt="play">
+                <div class="button" id="logOnlyEEGButton">
+                    Log EEG (No Noise)
+                    <img src="assets/play.svg" class="playPauseImgInButton" alt="play">
+                </div>
+                <div class="button" id="logEEGandNoiseButton">
+                    Log EEG + Noise
+                    <img src="assets/play.svg" id="logNoisePlayButton" class="playPauseImgInButton" alt="play">
+                </div>
             </div>
         </div>
-    </div>
-    <div id="footer">
-        <img src="assets/logo.png" alt="Logo" class="logo">
-        <p>NoiseScape&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
-        <button id="toggleLogsButton">Logs ▼</button>
     </div>
 
     <div id="logPanel" class="hidden">
