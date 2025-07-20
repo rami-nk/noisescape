@@ -231,7 +231,6 @@ select, input {
 
 #folderButton {
     background: #374151;
-    width: fit-content;
 }
 
 #column1 {
@@ -303,6 +302,7 @@ select, input {
     gap: 15px;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .select {
