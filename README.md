@@ -1,3 +1,26 @@
+<p align="center">
+  <img src="static/assets/logo.png" width="180" alt="NoiseScape Logo">
+</p>
+
+<h1 align="center">NoiseScape</h1>
+
+<p align="center">
+  <strong>EEG-Guided Adaptive Noise Experiments</strong><br>
+  A research tool for analyzing how noise types and volume affect brainwaves.
+</p>
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#purpose">Purpose</a> •
+  <a href="#eeg--simulation-modes">EEG Mode</a> •
+  <a href="#volume-calibration">Volume Calibration</a> •
+  <a href="#data-logging-format">Data Format</a> •
+  <a href="#cognitive-states--evaluation-logic">State Evaluation</a> •
+  <a href="#getting-started">Getting Started</a>
+</p>
+
+<hr>
+
 # NoiseScape – EEG-Guided Adaptive Noise Experiments
 
 **NoiseScape** is an experimental research tool designed for evaluating how different types and volumes of ambient noise affect brainwave activity, using EEG data.
@@ -14,6 +37,17 @@ NoiseScape enables researchers to:
 - Define custom **low / medium / high** volume thresholds tailored to each test subject
 - Log EEG activity during playback of **white, pink, and brown noise**
 - Run adaptive evaluation to determine which noise setting best promotes a chosen brain state
+
+---
+
+## UI Overview
+
+The interface is organized into three main panels:
+- **EEG Bands Panel**: Shows real-time brainwave activity.
+- **Noise Panel**: Choose noise color, volume, and playback.
+- **Study Panel**: Launch noise-state experiments for logging.
+
+![NoiseScape Screenshot](static/assets/ui.png)
 
 ---
 
@@ -91,7 +125,7 @@ Covers:
 - Adaptive group selection
 - Edge cases (missing data, improper config)
 
-## Getting Started 
+## Getting Started
 
 1. Install Dependencies
 ```bash
@@ -104,3 +138,9 @@ npm run
 ```
 
 > **_NOTE:_** Requires an OpenBCI Cyton device for real EEG input.
+
+## Contributors
+
+This project was developed by us — a group of students at Ludwig Maximilian University of Munich (LMU) — as part of the Praktikum: Practical Physiological Computing (SoSe 2025).
+
+We built NoiseScape to explore how different noise environments influence brain activity, and to provide researchers with a tool to measure and adapt these effects using real-time EEG data.
